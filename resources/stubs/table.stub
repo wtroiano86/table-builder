@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+{{ modelImport }}use Wtroiano\TableBuilder\Actions\Action;
+use Wtroiano\TableBuilder\Columns;
+use Wtroiano\TableBuilder\Exports\Export;
+use Wtroiano\TableBuilder\Table;
+
+final class {{ class }} extends Table
+{
+{{ modelResource }}    /** @return list<Columns\Column> */
+    public function columns(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    /** @return list<Action> */
+    public function actions(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    /** @return list<Export> */
+    public function exports(): array
+    {
+        return [
+            //
+        ];
+    }
+}

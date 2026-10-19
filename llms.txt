@@ -1,0 +1,27 @@
+# Table Builder
+
+> PHP table definitions, command endpoints and published React views for Laravel/Inertia applications. Read installed-version documentation and application instructions before changing an integration.
+
+## Application integration
+
+- [Documentation index](docs/README.md): consumer and contributor guide map.
+- [Getting started](docs/consumers/getting-started.md): requirements, installation, authorized controller and React page.
+- [Tables](docs/consumers/tables.md): fluent builders, subclasses, registry factories and public APIs.
+- [Columns](docs/consumers/columns.md): formatting, identity, visibility, search and sort callbacks.
+- [React](docs/consumers/react.md): published components, props, custom renderers and themes.
+- [State and pagination](docs/consumers/state-and-pagination.md): URL namespaces, reset values and cursor links.
+- [Actions](docs/consumers/actions.md): authorization, eligibility, mutation and lifecycle behavior.
+- [Exports](docs/consumers/exports.md): downloads, selected/filtered output and trusted worker context.
+- [HTTP contract](docs/consumers/http-contract.md): payloads, command fields, responses and errors.
+- [Troubleshooting](docs/consumers/troubleshooting.md): common integration failures.
+- [Laravel Boost](docs/boost.md): opt-in package guidance and skills.
+
+## Package maintenance
+
+- [Contributing](docs/development/contributing.md): repository structure and change workflow.
+- [Testing](docs/development/testing.md): validation commands and coverage boundaries.
+- [Agent workflow](docs/development/agent-workflow.md): evidence and contributor conventions.
+- [Architecture](docs/architecture.md): internals and namespaces.
+- [Releasing](docs/development/releasing.md): release checks, archives and publishing.
+
+This is a local documentation index. Boost discovers resources through `resources/boost`; it does not depend on this file.

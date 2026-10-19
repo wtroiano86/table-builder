@@ -1,0 +1,659 @@
+{
+    "name": "people",
+    "results": {
+        "path": "http://localhost/records",
+        "per_page": 2,
+        "next_page_url": "http://localhost/records?tab=people&people%5Bpage%5D=2",
+        "prev_page_url": null,
+        "current_page": 1,
+        "first_page_url": "http://localhost/records?tab=people&people%5Bpage%5D=1",
+        "from": 1,
+        "to": 2,
+        "last_page": 2,
+        "last_page_url": "http://localhost/records?tab=people&people%5Bpage%5D=2",
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "page": null,
+                "active": false
+            },
+            {
+                "url": "http://localhost/records?tab=people&people%5Bpage%5D=1",
+                "label": "1",
+                "page": 1,
+                "active": true
+            },
+            {
+                "url": "http://localhost/records?tab=people&people%5Bpage%5D=2",
+                "label": "2",
+                "page": 2,
+                "active": false
+            },
+            {
+                "url": "http://localhost/records?tab=people&people%5Bpage%5D=2",
+                "label": "Next &raquo;",
+                "page": 2,
+                "active": false
+            }
+        ],
+        "total": 3,
+        "data": [
+            {
+                "_column_urls": [],
+                "_column_images": {
+                    "name": {
+                        "url": "/avatar.svg",
+                        "urls": [],
+                        "icon": null,
+                        "size": "medium",
+                        "width": null,
+                        "height": null,
+                        "rounded": true,
+                        "position": "start",
+                        "class": "",
+                        "alt": "Ada Lovelace",
+                        "title": "",
+                        "limit": null
+                    }
+                },
+                "_primary_key": 1,
+                "code": "DISPLAY-ACCT-001",
+                "_selection_key": "acct-001",
+                "name": "Ada Lovelace",
+                "team": "Engineering",
+                "active": true,
+                "balance": 3475.5,
+                "joined": "2026-01-02",
+                "_selectable": true,
+                "_actions": [
+                    {
+                        "key": "edit",
+                        "label": "Edit",
+                        "type": "link",
+                        "url": {
+                            "url": "/records/1",
+                            "target": null
+                        },
+                        "endpoint": null,
+                        "bulk": false,
+                        "onlyBulk": false,
+                        "authorized": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "confirm": false,
+                        "icon": null,
+                        "tooltip": null,
+                        "showLabel": true,
+                        "variant": null,
+                        "variantColor": null,
+                        "class": null,
+                        "meta": [],
+                        "data": [],
+                        "chunkSize": 100,
+                        "chunkStrategy": "chunkById"
+                    },
+                    {
+                        "key": "archive",
+                        "label": "Archive",
+                        "type": "action",
+                        "url": null,
+                        "endpoint": "/table-builder/actions",
+                        "bulk": true,
+                        "onlyBulk": false,
+                        "authorized": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "confirm": {
+                            "title": "Archive records?",
+                            "message": "This will archive the selected records.",
+                            "confirmButton": "Archive",
+                            "cancelButton": "Keep records"
+                        },
+                        "icon": null,
+                        "tooltip": null,
+                        "showLabel": true,
+                        "variant": null,
+                        "variantColor": null,
+                        "class": null,
+                        "meta": [],
+                        "data": [],
+                        "chunkSize": 100,
+                        "chunkStrategy": "chunkById"
+                    }
+                ]
+            },
+            {
+                "_column_urls": [],
+                "_column_images": {
+                    "name": {
+                        "url": "/avatar.svg",
+                        "urls": [],
+                        "icon": null,
+                        "size": "medium",
+                        "width": null,
+                        "height": null,
+                        "rounded": true,
+                        "position": "start",
+                        "class": "",
+                        "alt": "Grace Hopper",
+                        "title": "",
+                        "limit": null
+                    }
+                },
+                "_primary_key": 2,
+                "code": "DISPLAY-ACCT-002",
+                "_selection_key": "acct-002",
+                "name": "Grace Hopper",
+                "team": "Operations",
+                "active": false,
+                "balance": 3475.5,
+                "joined": "2026-01-02",
+                "_selectable": false,
+                "_actions": [
+                    {
+                        "key": "edit",
+                        "label": "Edit",
+                        "type": "link",
+                        "url": {
+                            "url": "/records/2",
+                            "target": null
+                        },
+                        "endpoint": null,
+                        "bulk": false,
+                        "onlyBulk": false,
+                        "authorized": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "confirm": false,
+                        "icon": null,
+                        "tooltip": null,
+                        "showLabel": true,
+                        "variant": null,
+                        "variantColor": null,
+                        "class": null,
+                        "meta": [],
+                        "data": [],
+                        "chunkSize": 100,
+                        "chunkStrategy": "chunkById"
+                    },
+                    {
+                        "key": "archive",
+                        "label": "Archive",
+                        "type": "action",
+                        "url": null,
+                        "endpoint": "/table-builder/actions",
+                        "bulk": true,
+                        "onlyBulk": false,
+                        "authorized": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "confirm": {
+                            "title": "Archive records?",
+                            "message": "This will archive the selected records.",
+                            "confirmButton": "Archive",
+                            "cancelButton": "Keep records"
+                        },
+                        "icon": null,
+                        "tooltip": null,
+                        "showLabel": true,
+                        "variant": null,
+                        "variantColor": null,
+                        "class": null,
+                        "meta": [],
+                        "data": [],
+                        "chunkSize": 100,
+                        "chunkStrategy": "chunkById"
+                    }
+                ]
+            }
+        ],
+        "on_first_page": true,
+        "on_last_page": false
+    },
+    "meta": {
+        "columns": [
+            {
+                "key": "name",
+                "name": "name",
+                "type": "text",
+                "label": "Name",
+                "visible": true,
+                "sortable": true,
+                "searchable": true,
+                "toggleable": true,
+                "sticky": false,
+                "alignment": null,
+                "width": null,
+                "minWidth": null,
+                "maxWidth": null,
+                "labelClass": null,
+                "cellClass": null,
+                "defaultValue": null,
+                "export": {
+                    "enabled": true,
+                    "custom": false
+                },
+                "meta": []
+            },
+            {
+                "key": "code",
+                "name": "code",
+                "type": "text",
+                "label": "Account",
+                "visible": false,
+                "sortable": false,
+                "searchable": false,
+                "toggleable": true,
+                "sticky": false,
+                "alignment": null,
+                "width": null,
+                "minWidth": null,
+                "maxWidth": null,
+                "labelClass": null,
+                "cellClass": null,
+                "defaultValue": null,
+                "export": {
+                    "enabled": true,
+                    "custom": false
+                },
+                "meta": []
+            },
+            {
+                "key": "team",
+                "name": "team",
+                "type": "badge",
+                "label": "Team",
+                "visible": true,
+                "sortable": false,
+                "searchable": false,
+                "toggleable": true,
+                "sticky": false,
+                "alignment": null,
+                "width": null,
+                "minWidth": null,
+                "maxWidth": null,
+                "labelClass": null,
+                "cellClass": null,
+                "defaultValue": null,
+                "export": {
+                    "enabled": true,
+                    "custom": false
+                },
+                "meta": {
+                    "colors": {
+                        "Engineering": "blue",
+                        "Operations": "green"
+                    }
+                }
+            },
+            {
+                "key": "active",
+                "name": "active",
+                "type": "boolean",
+                "label": "Active",
+                "visible": true,
+                "sortable": false,
+                "searchable": false,
+                "toggleable": true,
+                "sticky": false,
+                "alignment": null,
+                "width": null,
+                "minWidth": null,
+                "maxWidth": null,
+                "labelClass": null,
+                "cellClass": null,
+                "defaultValue": null,
+                "export": {
+                    "enabled": true,
+                    "custom": false
+                },
+                "meta": {
+                    "trueLabel": "Active",
+                    "falseLabel": "Inactive"
+                }
+            },
+            {
+                "key": "balance",
+                "name": "balance",
+                "type": "numeric",
+                "label": "Balance",
+                "visible": true,
+                "sortable": false,
+                "searchable": false,
+                "toggleable": true,
+                "sticky": false,
+                "alignment": "right",
+                "width": null,
+                "minWidth": null,
+                "maxWidth": null,
+                "labelClass": null,
+                "cellClass": null,
+                "defaultValue": null,
+                "export": {
+                    "enabled": true,
+                    "custom": false
+                },
+                "meta": {
+                    "precision": 2,
+                    "prefix": "$"
+                }
+            },
+            {
+                "key": "joined",
+                "name": "joined",
+                "type": "date",
+                "label": "Joined",
+                "visible": true,
+                "sortable": false,
+                "searchable": false,
+                "toggleable": true,
+                "sticky": false,
+                "alignment": null,
+                "width": null,
+                "minWidth": null,
+                "maxWidth": null,
+                "labelClass": null,
+                "cellClass": null,
+                "defaultValue": null,
+                "export": {
+                    "enabled": true,
+                    "custom": false
+                },
+                "meta": {
+                    "format": "M j, Y"
+                }
+            }
+        ],
+        "pagination": {
+            "enabled": true,
+            "type": "standard",
+            "defaultPerPage": 2,
+            "perPageOptions": [
+                2,
+                10
+            ],
+            "scrollToTop": true
+        },
+        "queryString": {
+            "namespace": "people",
+            "page": "people[page]",
+            "perPage": "people[perPage]",
+            "cursor": "people[cursor]",
+            "search": "people[search]",
+            "sort": "people[sort]",
+            "direction": "people[direction]",
+            "columns": "people[columns]",
+            "sticky": "people[sticky]"
+        },
+        "table": "registry:react-records",
+        "actionEndpoint": "/table-builder/actions",
+        "exportEndpoint": "/table-builder/exports"
+    },
+    "search": [],
+    "columns": [
+        {
+            "type": "text",
+            "header": "Name",
+            "attribute": "name",
+            "sortable": true,
+            "toggleable": true,
+            "alignment": "left",
+            "visibleByDefault": true,
+            "meta": {
+                "hidden": false,
+                "sortable": true,
+                "toggleable": true,
+                "stickable": false,
+                "defaultToSticky": false
+            },
+            "wrap": false,
+            "tooltip": null,
+            "truncate": null,
+            "headerClass": null,
+            "cellClass": null,
+            "stickable": false
+        },
+        {
+            "type": "text",
+            "header": "Account",
+            "attribute": "code",
+            "sortable": false,
+            "toggleable": true,
+            "alignment": "left",
+            "visibleByDefault": false,
+            "meta": {
+                "hidden": true,
+                "sortable": false,
+                "toggleable": true,
+                "stickable": false,
+                "defaultToSticky": false
+            },
+            "wrap": false,
+            "tooltip": null,
+            "truncate": null,
+            "headerClass": null,
+            "cellClass": null,
+            "stickable": false
+        },
+        {
+            "type": "badge",
+            "header": "Team",
+            "attribute": "team",
+            "sortable": false,
+            "toggleable": true,
+            "alignment": "left",
+            "visibleByDefault": true,
+            "meta": {
+                "hidden": false,
+                "sortable": false,
+                "toggleable": true,
+                "stickable": false,
+                "defaultToSticky": false,
+                "colors": {
+                    "Engineering": "blue",
+                    "Operations": "green"
+                }
+            },
+            "wrap": false,
+            "tooltip": null,
+            "truncate": null,
+            "headerClass": null,
+            "cellClass": null,
+            "stickable": false
+        },
+        {
+            "type": "boolean",
+            "header": "Active",
+            "attribute": "active",
+            "sortable": false,
+            "toggleable": true,
+            "alignment": "left",
+            "visibleByDefault": true,
+            "meta": {
+                "hidden": false,
+                "sortable": false,
+                "toggleable": true,
+                "stickable": false,
+                "defaultToSticky": false,
+                "trueLabel": "Active",
+                "falseLabel": "Inactive"
+            },
+            "wrap": false,
+            "tooltip": null,
+            "truncate": null,
+            "headerClass": null,
+            "cellClass": null,
+            "stickable": false
+        },
+        {
+            "type": "numeric",
+            "header": "Balance",
+            "attribute": "balance",
+            "sortable": false,
+            "toggleable": true,
+            "alignment": "right",
+            "visibleByDefault": true,
+            "meta": {
+                "hidden": false,
+                "sortable": false,
+                "toggleable": true,
+                "stickable": false,
+                "defaultToSticky": false,
+                "precision": 2,
+                "prefix": "$"
+            },
+            "wrap": false,
+            "tooltip": null,
+            "truncate": null,
+            "headerClass": null,
+            "cellClass": null,
+            "stickable": false
+        },
+        {
+            "type": "date",
+            "header": "Joined",
+            "attribute": "joined",
+            "sortable": false,
+            "toggleable": true,
+            "alignment": "left",
+            "visibleByDefault": true,
+            "meta": {
+                "hidden": false,
+                "sortable": false,
+                "toggleable": true,
+                "stickable": false,
+                "defaultToSticky": false,
+                "format": "M j, Y"
+            },
+            "wrap": false,
+            "tooltip": null,
+            "truncate": null,
+            "headerClass": null,
+            "cellClass": null,
+            "stickable": false
+        }
+    ],
+    "actions": [
+        {
+            "key": "archive",
+            "label": "Archive",
+            "type": "action",
+            "url": null,
+            "endpoint": "/table-builder/actions",
+            "bulk": true,
+            "onlyBulk": false,
+            "authorized": true,
+            "disabled": false,
+            "hidden": false,
+            "confirm": {
+                "title": "Archive records?",
+                "message": "This will archive the selected records.",
+                "confirmButton": "Archive",
+                "cancelButton": "Keep records"
+            },
+            "icon": null,
+            "tooltip": null,
+            "showLabel": true,
+            "variant": null,
+            "variantColor": null,
+            "class": null,
+            "meta": [],
+            "data": [],
+            "chunkSize": 100,
+            "chunkStrategy": "chunkById"
+        }
+    ],
+    "exports": [
+        {
+            "key": "records",
+            "label": "Download records",
+            "endpoint": "/table-builder/exports",
+            "authorized": true,
+            "hidden": false,
+            "disabled": false,
+            "queued": false,
+            "limitToFilteredRows": true,
+            "limitToSelectedRows": false,
+            "asDownload": true,
+            "meta": [],
+            "data": []
+        },
+        {
+            "key": "selected",
+            "label": "Download selected",
+            "endpoint": "/table-builder/exports",
+            "authorized": true,
+            "hidden": false,
+            "disabled": false,
+            "queued": false,
+            "limitToFilteredRows": true,
+            "limitToSelectedRows": true,
+            "asDownload": true,
+            "meta": [],
+            "data": []
+        },
+        {
+            "key": "background",
+            "label": "Queue export",
+            "endpoint": "/table-builder/exports",
+            "authorized": true,
+            "hidden": false,
+            "disabled": false,
+            "queued": true,
+            "limitToFilteredRows": false,
+            "limitToSelectedRows": false,
+            "asDownload": false,
+            "meta": [],
+            "data": []
+        }
+    ],
+    "state": {
+        "columns": {
+            "name": true,
+            "code": false,
+            "team": true,
+            "active": true,
+            "balance": true,
+            "joined": true
+        },
+        "perPage": 2,
+        "search": null,
+        "sort": "name",
+        "direction": "asc",
+        "sticky": []
+    },
+    "pagination": true,
+    "paginationType": "full",
+    "perPageOptions": [
+        2,
+        10
+    ],
+    "defaultPerPage": 2,
+    "defaultSort": "name",
+    "debounceTime": 300,
+    "reloadProps": [],
+    "hasActions": true,
+    "hasBulkActions": true,
+    "hasExports": true,
+    "hasExportsThatLimitsToSelectedRows": true,
+    "hasFilters": false,
+    "hasSearch": true,
+    "hasToggleableColumns": true,
+    "scrollPositionAfterPageChange": "topOfPage",
+    "autofocus": "search",
+    "emptyState": {
+        "title": "No matching people",
+        "message": "Try a different name or clear your search.",
+        "icon": null,
+        "action": null
+    },
+    "stickyHeader": true,
+    "rowSelectionKey": "_selection_key",
+    "selectable": true,
+    "persistRowSelectionAcrossPages": false,
+    "selection": {
+        "mode": "page"
+    },
+    "inDefaultState": true
+}

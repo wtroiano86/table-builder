@@ -1,0 +1,3 @@
+import { TablePage } from '../../vendor/table-builder';
+
+export default TablePage;
