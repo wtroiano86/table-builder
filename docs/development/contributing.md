@@ -27,9 +27,12 @@ Composer's install hooks prepare the Orchestra Testbench skeleton. No consuming 
 | `resources/boost` | Consumer agent guidelines and skills |
 | `tests/Feature`, `tests/Unit` | PHP behavior, HTTP, query, export and distribution contracts |
 | `tests/react`, `tests/browser` | Component tests and browser fixture app |
+| `tests/Demo` | Demo PHP definitions, browser application and documentation captures |
 | `docs/consumers`, `docs/development` | Application usage and package maintenance documentation |
 
 Read [architecture](../architecture.md) before extending a pipeline or importing an internal class. Application integrations should use documented public types rather than depending on pipeline contexts or stores.
+
+Run `npm run demo` for the [interactive Customers and Invoices demo](../demo.md). Use `npm run demo:screenshots` to refresh its checked-in documentation images after visual changes.
 
 ## Make a change
 

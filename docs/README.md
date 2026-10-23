@@ -2,6 +2,8 @@
 
 The package provides Eloquent-backed table definitions, action/export endpoints, and a React table component with an optional Inertia page.
 
+See it in action with the [local demo and screenshot gallery](demo.md).
+
 ## Consumers
 
 Start with [Getting started](consumers/getting-started.md) to render a table in a Laravel/Inertia/React application.

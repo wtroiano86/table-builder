@@ -13,5 +13,11 @@
         "allowImportingTsExtensions": true,
         "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom"]
     },
-    "include": ["resources/react", "tests/react", "tests/browser", "*.ts"]
+    "include": [
+        "resources/react",
+        "tests/react",
+        "tests/browser",
+        "tests/Demo",
+        "*.ts"
+    ]
 }

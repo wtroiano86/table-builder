@@ -12,12 +12,16 @@ composer test:distribution     # Validate distribution contents
 composer test:release          # Manifest, runtime audit, PHP checks, docs, distribution
 npm ci
 npm run dev                   # Interactive preview at http://127.0.0.1:4173/records
+npm run demo                  # Laravel/SQLite demo at http://127.0.0.1:4176
 npm run check                 # Types, formatting, React tests and production build
 npm run typecheck
 npm run build
 npm test                      # React behavior and transport contracts
 npx playwright install chromium
 npm run test:browser          # Real Inertia navigation, downloads, accessibility
+npm run test:demo             # Real Laravel/SQLite queries, actions and exports
+npm run build:demo            # Compile the demo frontend
+npm run demo:screenshots      # Refresh the five shipped documentation PNGs
 npm run format:check
 ```
 
@@ -28,6 +32,8 @@ CI runs SQLite checks with both the highest and lowest resolvable dependencies, 
 Frontend CI covers React 18/Inertia 2, React 19/Inertia 2 and React 19/Inertia 3. The browser fixture app exercises the real Inertia client against a local contract server; the shared payload is checked against PHP serialization in `ReactAssetsTest`. Run that test with `UPDATE_REACT_CONTRACT=1` when intentionally updating `tests/react/fixtures/table.json`. The fixture server is development-only and is excluded from Composer distributions.
 
 For an interactive preview, run `npm run dev` and open `http://127.0.0.1:4173/records`. It uses the shared payload with demo Delete and Deactivate actions in the header menu and an explicit Actions column. Changes are kept in memory; visit `/__reset` and reload the table to restore the sample records. These endpoints simulate application handlers and do not execute Laravel policies or database writes.
+
+For a demo backed by real PHP definitions, run `npm run demo`. Its Customers and Invoices tables use Laravel, Eloquent and SQLite, including the package's action and export handlers. The [demo guide](../demo.md) explains setup, persistence, resets, screenshots and the application's boundaries. `test:demo` and `demo:screenshots` start an isolated instance on port 4177; they do not reuse the interactive server or its database. Screenshot regeneration is explicit and is not part of normal tests.
 
 ## Choose checks for the change
 

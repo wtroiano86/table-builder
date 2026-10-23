@@ -2,7 +2,46 @@
 
 Eloquent-backed tables for Laravel, Inertia.js and React. Define a table with a fluent builder or PHP class, then render it with the supplied React component or Inertia page. Includes search, sorting, column visibility, pagination, selection, policy-checked actions and spreadsheet exports.
 
+![Customer table with searchable records, plan badges, revenue, dates and row actions](docs/images/customers-light.png)
+
+Real browser screenshots of the [local Laravel/SQLite demo](docs/demo.md), built with the package's PHP definitions and shipped React components using deterministic sample data.
+
+<details>
+<summary>See invoices, bulk actions, dark mode, and mobile</summary>
+
+An invoice table with payment status badges, sortable amounts and dates, and row actions:
+
+![Invoice table with payment statuses, amounts, issue and due dates, and Mark paid actions](docs/images/invoices-light.png)
+
+Row selection and the bulk action menu:
+
+![A selected customer with the Deactivate and Delete bulk actions visible](docs/images/customers-actions.png)
+
+The customer table in dark mode:
+
+![Customer table with the package's dark styling](docs/images/customers-dark.png)
+
+On mobile, controls wrap and the table scrolls horizontally:
+
+![Customer table on a narrow mobile viewport](docs/images/customers-mobile.png)
+
+</details>
+
 Requires PHP 8.5 and Laravel 13 in an application already configured for Inertia and React. Supported frontend combinations are React 18/Inertia 2 and React 19/Inertia 2 or 3.
+
+## Try the demo locally
+
+From a clone of this repository, run:
+
+```sh
+composer install
+npm ci
+npm run demo
+```
+
+Open [localhost:4176](http://127.0.0.1:4176). Explore Customers and Invoices, search and sort records, change visible columns, select rows, run actions, and download CSV or Excel files. The demo uses the package's React components and PHP handlers with a seeded SQLite database. Use **Reset demo** to restore the sample data.
+
+See the [demo guide and screenshot gallery](docs/demo.md) for dark mode, mobile, setup details and screenshot regeneration.
 
 ## Quick start
 

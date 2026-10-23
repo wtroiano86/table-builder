@@ -11,7 +11,9 @@
 /tsconfig.json export-ignore
 /vitest.config.ts export-ignore
 /vite.preview.config.ts export-ignore
+/vite.demo.config.ts export-ignore
 /playwright.config.ts export-ignore
+/playwright.demo.config.ts export-ignore
 /playwright-report export-ignore
 /test-results export-ignore
 /.prettierignore export-ignore

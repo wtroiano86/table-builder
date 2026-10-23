@@ -1,0 +1,119 @@
+/* Demo application chrome. Table styling comes directly from the package. */
+:root {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    color: #202631;
+    background: #f7f8fa;
+    --demo-surface: #fff;
+    --demo-muted: #5b6575;
+    --demo-border: #dfe3e9;
+    --demo-accent: #2459bd;
+}
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    color: #e7ebf2;
+    background: #11151c;
+    --demo-surface: #171c24;
+    --demo-muted: #a6b0c0;
+    --demo-border: #354052;
+    --demo-accent: #9abaff;
+}
+body {
+    margin: 0;
+}
+.demo-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 32px;
+    padding: 20px clamp(16px, 4vw, 64px);
+    border-bottom: 1px solid var(--demo-border);
+    background: var(--demo-surface);
+}
+.demo-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: inherit;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+}
+.demo-brand svg {
+    width: 27px;
+    height: 27px;
+    stroke: var(--demo-accent);
+    stroke-width: 1.6;
+}
+.demo-tag {
+    color: var(--demo-muted);
+    border: 1px solid var(--demo-border);
+    border-radius: 5px;
+    padding: 3px 6px;
+    font-size: 9px;
+    letter-spacing: 0.07em;
+}
+.demo-tabs {
+    display: flex;
+    gap: 24px;
+    margin-left: auto;
+}
+.demo-tabs a {
+    padding: 8px 0;
+    color: var(--demo-muted);
+    text-decoration: none;
+    font-size: 13px;
+}
+.demo-tabs a[aria-current="page"] {
+    color: var(--demo-accent);
+    box-shadow: 0 2px var(--demo-accent);
+}
+.demo-theme,
+.demo-reset {
+    color: inherit;
+    font: inherit;
+    font-size: 12px;
+    padding: 9px 12px;
+    border: 1px solid var(--demo-border);
+    border-radius: 7px;
+    background: var(--demo-surface);
+    cursor: pointer;
+}
+.demo-reset:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+.demo-nav :focus-visible,
+.demo-reset:focus-visible {
+    outline: 2px solid var(--demo-accent);
+    outline-offset: 4px;
+}
+.tb-page {
+    min-height: auto;
+    padding-top: 44px;
+    padding-bottom: 32px;
+}
+.demo-footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 clamp(16px, 4vw, 64px) 28px;
+    color: var(--demo-muted);
+    font-size: 11px;
+}
+.demo-footer p {
+    width: 100%;
+}
+@media (max-width: 600px) {
+    .demo-nav {
+        gap: 16px;
+    }
+    .demo-brand {
+        width: 100%;
+    }
+    .demo-tabs {
+        margin-left: 0;
+        margin-right: auto;
+    }
+}
