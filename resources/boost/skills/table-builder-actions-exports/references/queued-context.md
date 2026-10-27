@@ -24,8 +24,8 @@ TableRegistry::define('tenant-users', static fn (): TableBuilder => TableBuilder
 
         return User::query()->where('tenant_id', $tenantId);
     })
-    ->columns([TextColumn::make('name', sortable: true, searchable: true)])
-    ->exports([Export::make('Users', 'users.xlsx')->key('users')->queue('users.xlsx', 'local')])
+    ->columns([TextColumn::make('name')->sortable()->searchable()])
+    ->exports([Export::make('Users')->filename('users.xlsx')->key('users')->queue('users.xlsx', 'local')])
     ->exportContext(
         capture: static fn (ExportRequest $request): array => ['tenant_id' => Context::get('tenant_id')],
         restore: static function (array $context, Closure $callback): mixed {

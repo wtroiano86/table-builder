@@ -33,7 +33,7 @@ beforeEach(function (): void {
 
 it('renders inline fluent tables through existing search sort and pagination pipelines', function (): void {
     $table = TableBuilder::make('people')->resource(PipelineRecord::class)
-        ->columns([TextColumn::make('name', sortable: true, searchable: true)])
+        ->columns([TextColumn::make('name')->sortable()->searchable()])
         ->defaultSort('-name')->perPage(1)->perPageOptions([1, 2])->build();
 
     $first = $table->results();
@@ -71,7 +71,7 @@ it('keeps built tables independent of builder prototypes and source queries', fu
 
 it('applies fluent state presentation and row hooks', function (): void {
     $table = TableBuilder::make('people')->resource(static fn (): Builder => PipelineRecord::query())
-        ->columns([TextColumn::make('name', sortable: true)])
+        ->columns([TextColumn::make('name')->sortable()])
         ->searchable(['team'])->defaultSort('-name')->perPage(2)->perPageOptions([1, 2])
         ->pagination(true, PaginationType::Cursor)->scrollToTop(false)->stickyHeader()
         ->rowSelectionKey('code')->selectable(false)->persistRowSelectionAcrossPages()

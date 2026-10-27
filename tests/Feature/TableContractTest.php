@@ -53,7 +53,7 @@ beforeEach(function (): void {
             return $this;
         }
     };
-    $this->table->definitions = [TextColumn::make('name', sortable: true, searchable: true)->sticky()];
+    $this->table->definitions = [TextColumn::make('name')->sortable()->searchable()->sticky()];
 });
 
 it('builds definitions without querying and serializes results with request state', function (): void {
@@ -95,7 +95,7 @@ it('normalizes additional searchable fields and retains custom search predicates
     ])->and($metadata->sortableColumn('team'))->toBeNull();
     $this->table->configure(['search' => 'team']);
     expect($this->table->apply(request: TableRequest::fromArray(['search' => 'blue']))->get()->modelKeys())->toBe([2]);
-    $this->table->definitions = [TextColumn::make('name', searchable: true)->searchUsing(static fn (Builder $query, string $term): Builder => $query->where('name', $term))];
+    $this->table->definitions = [TextColumn::make('name')->searchable()->searchUsing(static fn (Builder $query, string $term): Builder => $query->where('name', $term))];
     expect($this->table->apply(request: TableRequest::fromArray(['search' => 'Grace']))->get()->modelKeys())->toBe([2]);
     $builder = resolve(TableQueryBuilder::class)->searchUsing(null)->searchUsing(static fn (Builder $query): Builder => $query->where('team', 'red'));
     expect($builder->apply(PipelineRecord::query(), $this->table, ['search' => 'anything'])->get()->modelKeys())->toBe([1]);

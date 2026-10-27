@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Wtroiano\TableBuilder\Columns;
 
+use ArgumentCountError;
 use Wtroiano\TableBuilder\Enums\ColumnAlignment;
 
 final class SerialNumberColumn extends Column
@@ -21,34 +22,10 @@ final class SerialNumberColumn extends Column
         ];
     }
 
-    /**
-     * @param  array<string, mixed>|callable|null  $exportStyle
-     * @param  array<string, mixed>  $meta
-     */
-    public static function make(
-        string $name = '_serial_number',
-        string|callable|null $label = null,
-        bool $sortable = false,
-        bool $toggleable = false,
-        bool $searchable = false,
-        string|ColumnAlignment|null $alignment = null,
-        ?callable $mapAs = null,
-        bool $visible = true,
-        ?callable $sortUsing = null,
-        array $meta = [],
-        bool $sticky = false,
-        ?callable $searchUsing = null,
-        ?string $key = null,
-        ?string $labelClass = null,
-        ?string $cellClass = null,
-        false|callable|null $exportAs = null,
-        string|callable|null $exportLabel = null,
-        ?string $exportFormat = null,
-        array|callable|null $exportStyle = null,
-    ): static {
-        $options = get_defined_vars();
-        unset($options['name']);
+    public static function make(string $name = '_serial_number'): static
+    {
+        throw_if(func_num_args() > 1, ArgumentCountError::class, 'Use fluent methods for additional factory configuration.');
 
-        return self::fromOptions($name, $options);
+        return new self($name);
     }
 }

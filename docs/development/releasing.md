@@ -1,6 +1,6 @@
 # Releasing
 
-The Composer package is `wtroiano/table-builder`, hosted at [wtroiano86/table-builder](https://github.com/wtroiano86/table-builder). The first stable release is `v1.0.0`. Composer reads versions from Git tags; keep the `version` field out of `composer.json`, following [Composer's library versioning guidance](https://getcomposer.org/doc/02-libraries.md#library-versioning). Releases are distributed through GitHub; Packagist registration is deferred.
+The Composer package is `wtroiano/table-builder`, hosted at [wtroiano86/table-builder](https://github.com/wtroiano86/table-builder). The current release line is `v2.0.0`; the [upgrade guide](../consumers/upgrading.md) covers the breaking factory changes from v1. Composer reads versions from Git tags; keep the `version` field out of `composer.json`, following [Composer's library versioning guidance](https://getcomposer.org/doc/02-libraries.md#library-versioning). Releases are distributed through GitHub; Packagist registration is deferred.
 
 ## Validate the candidate
 
@@ -23,20 +23,20 @@ Review `composer audit` and `npm audit` as well. The runtime audit is the releas
 ## Inspect the distribution
 
 ```sh
-composer archive --format=zip --dir=tmp/release --file=table-builder-1.0.0 --no-interaction
+composer archive --format=zip --dir=tmp/release --file=table-builder-2.0.0 --no-interaction
 ```
 
 The archive includes PHP runtime files, configuration, routes, React sources, stubs, documentation, the license, and Boost resources. Development dependencies, tests, CI files, local agent state, preview tooling and filesystem metadata are excluded. Git archives use `.gitattributes`; Composer archives additionally use `archive.exclude`. Keep both exclusion lists consistent. The CI dependency job also uploads a `table-builder-package` artifact for review.
 
 Install the archive into a disposable Laravel 13 application, check automatic provider discovery, publish all three `table-builder-*` tags, generate a table with `make:table-builder`, and compile the published React page with the application's Inertia/Vite setup. This is a separate check from the repository's simulated browser server.
 
-## Publish the first release
+## Publish a release
 
-1. Review and commit the complete package on `main`, then push it to the repository. The first release must include the CI workflows and every runtime/resource/documentation file.
+1. Review and commit the complete package on `main`, then push it to the repository. Include the CI workflows and every runtime/resource/documentation file.
 2. Wait for all checks on that commit to pass. Inspect its package artifact and confirm the installation checks above.
-3. Create an annotated `v1.0.0` tag on that exact commit and push the tag. Do not move a published tag; fixes require a new version.
+3. Create an annotated `v2.0.0` tag on that exact commit and push the tag. Do not move a published tag; fixes require a new version.
 4. Verify installation from the GitHub tag in a fresh application using the VCS repository commands in [Getting started](../consumers/getting-started.md#install).
-5. If publishing a GitHub release page, create it from the existing tag. Describe the initial package features, PHP 8.5/Laravel 13 requirements, supported React/Inertia combinations, and installation commands. Attach the reviewed archive if offering a direct download.
+5. If publishing a GitHub release page, create it from the existing tag. Describe the changes, migration steps, PHP 8.5/Laravel 13 requirements, supported React/Inertia combinations, and installation commands. Attach the reviewed archive if offering a direct download.
 
 Packagist registration is a separate future step. If enabled later, submit the repository through [Packagist](https://packagist.org/about), configure its GitHub update integration, and verify installation without a custom VCS repository.
 

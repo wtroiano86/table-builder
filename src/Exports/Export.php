@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Wtroiano\TableBuilder\Exports;
 
+use ArgumentCountError;
 use Closure;
 use Illuminate\Support\Traits\Conditionable;
 use JsonSerializable;
@@ -87,52 +88,11 @@ final class Export implements JsonSerializable
         $this->queueDisk = self::$defaultQueueDisk;
     }
 
-    /**
-     * @param  array<array-key, mixed>  $data
-     * @param  array<string, callable>  $events
-     * @param  array<array-key, mixed>  $meta
-     */
-    public static function make(
-        ?string $label = null,
-        ?string $filename = null,
-        ?string $type = null,
-        bool|callable|null $authorize = null,
-        bool $limitToFilteredRows = false,
-        bool $limitToSelectedRows = false,
-        bool $queued = false,
-        ?callable $using = null,
-        array $meta = [],
-        array $data = [],
-        array $events = [],
-    ): self {
-        $export = new self();
+    public static function make(?string $label = null): self
+    {
+        throw_if(func_num_args() > 1, ArgumentCountError::class, 'Use fluent methods for additional factory configuration.');
 
-        $export->label($label);
-        $export->filename($filename);
-        $export->type($type);
-
-        if ($authorize !== null) {
-            $export->authorize($authorize);
-        }
-
-        if ($limitToFilteredRows) {
-            $export->limitToFilteredRows();
-        }
-
-        if ($limitToSelectedRows) {
-            $export->limitToSelectedRows();
-        }
-
-        if ($queued) {
-            $export->queue();
-        }
-
-        $export->using($using);
-        $export->meta($meta);
-        $export->dataAttributes($data);
-        $export->events($events);
-
-        return $export;
+        return new self()->label($label);
     }
 
     public static function defaultLimitToFilteredRows(bool $enabled = true): void

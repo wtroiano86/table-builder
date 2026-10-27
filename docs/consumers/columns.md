@@ -14,7 +14,7 @@ use Wtroiano\TableBuilder\Columns\NumericColumn;
 use Wtroiano\TableBuilder\Columns\TextColumn;
 
 $columns = [
-    TextColumn::make('name', sortable: true, searchable: true)
+    TextColumn::make('name')->sortable()->searchable()
         ->label('Full name')->minWidth('12rem'),
     TextColumn::make('email')->url(fn ($user): string => 'mailto:'.$user->email),
     BadgeColumn::make('status')->colors(['active' => 'green', 'paused' => 'neutral']),
@@ -24,7 +24,7 @@ $columns = [
 ];
 ```
 
-Examples referencing `email`, `status`, `active` or `balance` assume those attributes exist on the application's model. Column factories accept named options; presentation options such as `width()` remain fluent setters. Use `key('unique_key')` when two columns read the same attribute.
+Examples referencing `email`, `status`, `active` or `balance` assume those attributes exist on the application's model. Column factories accept only the field name; configure labels, search, sorting, presentation and export behavior with fluent setters. Use `key('unique_key')` when two columns read the same attribute.
 
 ## Available types
 
@@ -75,7 +75,7 @@ Formatted columns are separate from selection identity. React reads the key name
 use Illuminate\Database\Eloquent\Builder;
 use Wtroiano\TableBuilder\Columns\TextColumn;
 
-$column = TextColumn::make('name', sortable: true, searchable: true)
+$column = TextColumn::make('name')->sortable()->searchable()
     ->searchUsing(fn (Builder $query, string $term): Builder => $query->where('name', 'like', $term.'%'))
     ->sortUsing(fn (Builder $query, string $direction): Builder => $query->orderBy('name', $direction));
 ```

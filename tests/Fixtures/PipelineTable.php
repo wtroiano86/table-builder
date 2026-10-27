@@ -16,7 +16,7 @@ final class PipelineTable extends Table
 
     public function columns(): array
     {
-        return [TextColumn::make('name', sortable: true, searchable: true)];
+        return [TextColumn::make('name')->sortable()->searchable()];
     }
 
     public function exports(): array

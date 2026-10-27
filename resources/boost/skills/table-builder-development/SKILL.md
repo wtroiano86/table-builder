@@ -20,7 +20,7 @@ use Wtroiano\TableBuilder\TableBuilder;
 $table = TableBuilder::make('users')
     ->resource(User::class)
     ->authorize(fn (Request $request): bool => $request->user()?->can('viewAny', User::class) ?? false)
-    ->columns([TextColumn::make('name', sortable: true, searchable: true)])
+    ->columns([TextColumn::make('name')->sortable()->searchable()])
     ->defaultSort('name')
     ->build();
 ```
@@ -35,6 +35,7 @@ Use the actions/exports skill for command policies, handlers and worker context.
 
 ## Columns, state and rendering
 
+- Pass only the field name to column factories and configure options through fluent methods. Read the installed `docs/consumers/upgrading.md` for v1 migrations.
 - Import column types from `Wtroiano\TableBuilder\Columns`. Mark search/sort fields explicitly. Use `key()` to disambiguate duplicate attributes; use the serialized key in state.
 - Keep `_primary_key` and `_selection_key` intact in row transforms. Read selection from `row[table.rowSelectionKey]`. Rendered labels and mapped IDs are not identity.
 - `visible(false)` sets an initial hidden state; users can reveal it and values remain serialized. Omit sensitive columns when unauthorized.

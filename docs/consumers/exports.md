@@ -9,7 +9,7 @@ use Wtroiano\TableBuilder\Exports\Export;
 public function exports(): array
 {
     return [
-        Export::make('Users', 'users.xlsx')->key('users')
+        Export::make('Users')->filename('users.xlsx')->key('users')
             ->authorize(fn (): bool => auth()->user()?->can('viewAny', User::class) ?? false)
             ->limitToFilteredRows(),
     ];
@@ -37,7 +37,7 @@ use Wtroiano\TableBuilder\Exports\Export;
 use Wtroiano\TableBuilder\Http\Requests\ExportRequest;
 use Wtroiano\TableBuilder\Table;
 
-$export = Export::make('Count users', 'users.json')->key('count')
+$export = Export::make('Count users')->filename('users.json')->key('count')
     ->limitToFilteredRows()
     ->using(function (Table $table, Export $export, ExportRequest $request, Builder $query): JsonResponse {
         return response()->json(['count' => $query->count()]);

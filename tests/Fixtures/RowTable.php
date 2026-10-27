@@ -46,7 +46,7 @@ final class RowTable extends Table
     {
         return [
             Action::make('View :id')->key('view'),
-            Action::make('Hidden', hidden: true),
+            Action::make('Hidden')->hidden(),
             Action::make('Bulk')->onlyAsBulkAction(),
         ];
     }

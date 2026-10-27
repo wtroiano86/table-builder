@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Wtroiano\TableBuilder\Actions;
 
+use ArgumentCountError;
 use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
@@ -12,8 +13,6 @@ use Wtroiano\TableBuilder\Actions\Concerns\ConfiguresAction;
 use Wtroiano\TableBuilder\Actions\Concerns\ExecutesAction;
 use Wtroiano\TableBuilder\Actions\Concerns\SerializesAction;
 use Wtroiano\TableBuilder\Concerns\HasFactoryAlias;
-use Wtroiano\TableBuilder\Enums\ButtonVariant;
-use Wtroiano\TableBuilder\Enums\TableColor;
 use Wtroiano\TableBuilder\Exceptions\TableBuilderException;
 use Wtroiano\TableBuilder\Support\Url;
 
@@ -92,64 +91,15 @@ final class Action implements JsonSerializable
         $this->name = is_string($name) ? $name : Closure::fromCallable($name);
     }
 
-    /**
-     * @param  bool|array<array-key, mixed>|callable  $confirm
-     * @param  array<array-key, mixed>  $data
-     * @param  array<array-key, mixed>  $meta
-     * @param  string|Url|callable|array<array-key, mixed>|null  $url
-     */
-    public static function make(
-        string|callable $name,
-        ?string $key = null,
-        string|Url|callable|array|null $url = null,
-        ?callable $handle = null,
-        bool $authorize = true,
-        bool $disabled = false,
-        bool $hidden = false,
-        bool $bulk = false,
-        bool $onlyBulk = false,
-        int $chunkSize = 100,
-        string $chunkStrategy = 'chunkById',
-        ?callable $before = null,
-        ?callable $after = null,
-        ?callable $success = null,
-        ?callable $error = null,
-        ?string $icon = null,
-        ?string $tooltip = null,
-        string|ButtonVariant|null $variant = null,
-        string|TableColor|null $variantColor = null,
-        ?string $class = null,
-        bool|array|callable $confirm = false,
-        array $meta = [],
-        array $data = [],
-        bool $showLabel = true,
-    ): self {
+    public static function make(string|callable $name): self
+    {
+        throw_if(func_num_args() > 1, ArgumentCountError::class, 'Use fluent methods for additional factory configuration.');
 
         if (is_string($name) && $name === '') {
             throw TableBuilderException::actionNameRequired();
         }
 
-        $action = new self($name);
-
-        $action->key($key);
-        $action->url($url);
-        $action->handle($handle);
-        $action->authorize($authorize);
-        $action->disabled($disabled);
-        $action->hidden($hidden);
-        $action->setBulkConfiguration($bulk, $onlyBulk, $chunkSize, $chunkStrategy);
-        $action->setLifecycleCallbacks($before, $after, $success, $error);
-        $action->icon($icon);
-        $action->tooltip($tooltip);
-        $action->showLabel($showLabel);
-        $action->variant($variant);
-        $action->variantColor($variantColor);
-        $action->class($class);
-        $action->confirm($confirm);
-        $action->meta($meta);
-        $action->data($data);
-
-        return $action;
+        return new self($name);
     }
 
     public function keyName(): string

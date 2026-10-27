@@ -25,7 +25,7 @@ final class TransportTable extends Table
 
     public function columns(): array
     {
-        return [TextColumn::make($this->field, sortable: true, searchable: true)->exportStyle(TransportStyle::CALLBACK)];
+        return [TextColumn::make($this->field)->sortable()->searchable()->exportStyle(TransportStyle::CALLBACK)];
     }
 
     public function exports(): array

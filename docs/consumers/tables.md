@@ -15,7 +15,7 @@ $table = TableBuilder::make('users')
     ->resource(User::class)
     ->authorize(fn (Request $request): bool => $request->user()?->can('viewAny', User::class) ?? false)
     ->columns([
-        TextColumn::make('name', sortable: true, searchable: true),
+        TextColumn::make('name')->sortable()->searchable(),
         TextColumn::make('email')->label('Email address'),
     ])
     ->defaultSort('name')
@@ -55,7 +55,7 @@ final class UsersTable extends Table
     public function columns(): array
     {
         return [
-            TextColumn::make('name', searchable: true, sortable: true),
+            TextColumn::make('name')->searchable()->sortable(),
             TextColumn::make('email')->label('Email address'),
         ];
     }
@@ -96,7 +96,7 @@ public function boot(): void
         ->resource(User::class)
         ->authorize(fn (Request $request): bool => $request->user()?->can('viewAny', User::class) ?? false)
         ->columns([
-            TextColumn::make('name', sortable: true, searchable: true),
+            TextColumn::make('name')->sortable()->searchable(),
             TextColumn::make('email'),
         ])
         ->actions([
@@ -106,7 +106,7 @@ public function boot(): void
                     $user->update(['active' => false]);
                 }),
         ])
-        ->exports([Export::make('Users', 'users.xlsx')->key('users')->limitToFilteredRows()])
+        ->exports([Export::make('Users')->filename('users.xlsx')->key('users')->limitToFilteredRows()])
         ->defaultSort('name')
         ->perPage(15));
 }

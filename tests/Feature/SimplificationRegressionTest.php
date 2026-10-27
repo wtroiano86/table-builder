@@ -81,7 +81,7 @@ it('does not advertise cleared export configuration', function (): void {
 it('can re-enable toggling without changing serial-number defaults', function (): void {
     expect(TextColumn::make('name')->toggleable(false)->toggleable(true)->toArray()['toggleable'])->toBeTrue()
         ->and(SerialNumberColumn::make()->toArray()['toggleable'])->toBeFalse()
-        ->and(SerialNumberColumn::make(toggleable: true)->toArray()['toggleable'])->toBeTrue();
+        ->and(SerialNumberColumn::make()->toggleable()->toArray()['toggleable'])->toBeTrue();
 });
 
 it('resolves definitions and export authorization once per payload, never across payloads', function (): void {
@@ -123,11 +123,11 @@ it('resolves definitions and export authorization once per payload, never across
     expect($table->calls)->toBe(['columns' => 2, 'actions' => 2, 'exports' => 2, 'authorize' => 2]);
 });
 
-it('keeps deprecated factories compatible with named arguments and strict parameter types', function (): void {
-    expect(TextColumn::create(name: 'email', searchable: true)->isSearchable())->toBeTrue()
+it('keeps deprecated factories compatible with fluent configuration and strict identity types', function (): void {
+    expect(TextColumn::create('email')->searchable()->isSearchable())->toBeTrue()
         ->and(SerialNumberColumn::create()->toArray()['toggleable'])->toBeFalse()
         ->and(Export::create(label: 'Report')->toArray()['label'])->toBe('Report')
-        ->and(Action::create(name: 'Run', key: 'run')->keyName())->toBe('run')
+        ->and(Action::create('Run')->key('run')->keyName())->toBe('run')
         ->and(TableEmptyState::create()->toArray()['title'])->toBeNull();
     expect(fn (): TextColumn => TextColumn::create(123))->toThrow(TypeError::class);
 });

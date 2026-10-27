@@ -15,7 +15,7 @@ Protect the application's page route and check table authorization before render
 
 ## Implement actions
 
-Import `Wtroiano\TableBuilder\Actions\Action`. Give actions stable `key()` values. Add `handle()` for executable mutations, `asBulkAction()` for row and bulk display, or `onlyAsBulkAction()` for bulk-only display. Use `collectResults(false)` when handler return values are unnecessary. Use `confirm()` for app-appropriate mutation confirmation.
+Import `Wtroiano\TableBuilder\Actions\Action`. Pass only the action name to `make()` and configure the remaining options fluently. Give actions stable `key()` values. Add `handle()` for executable mutations, `asBulkAction()` for row and bulk display, or `onlyAsBulkAction()` for bulk-only display. Use `collectResults(false)` when handler return values are unnecessary. Use `confirm()` for app-appropriate mutation confirmation.
 
 Send raw selection keys, not formatted columns, to `POST /table-builder/actions` with `table`, `action`, `selectionMode` and `keys`. The supplied React view uses explicit page-mode keys. An `all` action streams the base resource query and ignores client search. Limited/offset base queries capture eligible keys in memory before mutation; ordinary queries stream. Prefer the default `chunkById` strategy when mutation changes query membership.
 
@@ -25,7 +25,7 @@ Default JSON results include processed/skipped counts and handler results. Prese
 
 ## Implement exports
 
-Import `Wtroiano\TableBuilder\Exports\Export`. Give exports stable keys and filenames. Use `limitToFilteredRows()` to apply supplied search/sort and `limitToSelectedRows()` to constrain raw keys; an empty selected list exports no rows. `queue(filename, disk)` queues storage; `asDownload(false)` stores synchronously. Authorize the export and keep its resource scoped.
+Import `Wtroiano\TableBuilder\Exports\Export`. Pass only an optional label to `make()` and use `key()` and `filename()` to configure stable keys and filenames. Use `limitToFilteredRows()` to apply supplied search/sort and `limitToSelectedRows()` to constrain raw keys; an empty selected list exports no rows. `queue(filename, disk)` queues storage; `asDownload(false)` stores synchronously. Authorize the export and keep its resource scoped.
 
 Column `dontExport()`, `exportLabel()`, `exportAs()`, `exportFormat()` and `exportStyle()` customize spreadsheets independently of React. Strings are literal text; CSV formula-control prefixes are escaped. Enable `exportFormulas()` only for intentionally trusted formulas.
 

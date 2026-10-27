@@ -39,18 +39,18 @@ it('normalizes table state and preserves column overrides', function (): void {
         ->and($state->hasStickyOverride())->toBeTrue();
 });
 
-it('supports typed action column factories and named dropdown options', function (): void {
-    $column = ActionColumn::make(label: 'Options', sortable: true, asDropdown: true);
+it('supports typed action column factories and fluent dropdown options', function (): void {
+    $column = ActionColumn::make()->label('Options')->sortable()->asDropdown();
 
     expect($column->name())->toBe('actions')
         ->and($column->toArray()['meta'])->toMatchArray(['asDropdown' => true, 'dropdown' => true])
         ->and($column->toArray()['label'])->toBe('Options')
         ->and($column->isSortable())->toBeTrue()
-        ->and(ActionColumn::create('controls', 'Manage', asDropdown: true)->name())->toBe('controls');
+        ->and(ActionColumn::create('controls')->label('Manage')->asDropdown()->name())->toBe('controls');
 });
 
 it('resolves custom column callbacks safely', function (): void {
-    $column = TextColumn::make('name', label: static fn (): string => 'Display name')
+    $column = TextColumn::make('name')->label(static fn (): string => 'Display name')
         ->url(static fn (): string => '/users/1')
         ->mapAs(static fn (mixed $value): string => mb_strtoupper((string) $value));
 

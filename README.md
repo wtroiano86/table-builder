@@ -49,10 +49,12 @@ Releases are available through GitHub. Add the Composer VCS repository and insta
 
 ```sh
 composer config repositories.table-builder vcs https://github.com/wtroiano86/table-builder.git
-composer require wtroiano/table-builder:^1.0
+composer require wtroiano/table-builder:^2.0
 php artisan vendor:publish --tag=table-builder-react
 php artisan vendor:publish --tag=table-builder-react-page
 ```
+
+For v1 installations, follow the [v2 migration guide](docs/consumers/upgrading.md) to move factory options to fluent methods.
 
 In a controller receiving `$request`, define the table and return the supplied page. This example assumes an existing `User` model and `viewAny` policy:
 
@@ -67,7 +69,7 @@ $table = TableBuilder::make('users')
     ->resource(User::class)
     ->authorize(fn (Request $request): bool => $request->user()?->can('viewAny', User::class) ?? false)
     ->columns([
-        TextColumn::make('name', sortable: true, searchable: true),
+        TextColumn::make('name')->sortable()->searchable(),
         TextColumn::make('email'),
     ])
     ->defaultSort('name')

@@ -56,7 +56,7 @@ beforeEach(function (): void {
 
         public function columns(): array
         {
-            return [TextColumn::make('team', sortable: true)->exportFormulas($this->formulas), TextColumn::make('id')->mapAs(static fn (mixed $id): string => 'Record '.$id)];
+            return [TextColumn::make('team')->sortable()->exportFormulas($this->formulas), TextColumn::make('id')->mapAs(static fn (mixed $id): string => 'Record '.$id)];
         }
 
         public function actions(): array
@@ -148,7 +148,7 @@ it('protects reserved identity fields from column keys', function (): void {
     {
         public function columns(): array
         {
-            return [TextColumn::make('team', key: '_primary_key'), TextColumn::make('team', key: '_selection_key')];
+            return [TextColumn::make('team')->key('_primary_key'), TextColumn::make('team')->key('_selection_key')];
         }
     };
     $row = resolve(RowSerializationPipeline::class)->serialize($table, new PipelineRecord(['id' => 1, 'team' => 'red']));
@@ -169,7 +169,7 @@ it('writes untrusted text literally into real XLSX and CSV files', function (str
         File::delete($path);
     }
 
-    $csvExport = TableExcelExport::fromRequest($this->table, Export::make(type: ExcelWriter::CSV), $request);
+    $csvExport = TableExcelExport::fromRequest($this->table, Export::make()->type(ExcelWriter::CSV), $request);
     $csv = Excel::raw($csvExport, ExcelWriter::CSV);
     expect($csv)->toContain("'".$value);
 })->with(['=1+1', '+SUM(1,1)', '-1+2', '@SUM(1,1)', "\t=1+1"]);

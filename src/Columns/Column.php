@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Wtroiano\TableBuilder\Columns;
 
+use ArgumentCountError;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -18,7 +19,6 @@ use Wtroiano\TableBuilder\Enums\ColumnAlignment;
  * @phpstan-consistent-constructor
  *
  * @phpstan-type ColumnPayload array{key: string, name: string, type: string, label: string, visible: bool, sortable: bool, searchable: bool, toggleable: bool, sticky: bool, alignment: ?string, width: string|int|null, minWidth: string|int|null, maxWidth: string|int|null, labelClass: ?string, cellClass: ?string, defaultValue: mixed, export: array<array-key, mixed>, meta: array<array-key, mixed>, tooltip?: ?string}
- * @phpstan-type ColumnOptions array{key: ?string, label: string|callable|null, mapAs: ?callable, visible: bool, sortable: bool, searchable: bool, alignment: string|ColumnAlignment|null, meta: array<array-key, mixed>, toggleable: bool, sticky: bool, sortUsing: ?callable, searchUsing: ?callable, labelClass: ?string, cellClass: ?string, exportAs: false|callable|null, exportLabel: string|callable|null, exportFormat: ?string, exportStyle: array<array-key, mixed>|callable|null}
  */
 abstract class Column
 {
@@ -50,35 +50,12 @@ abstract class Column
 
     protected function __construct(protected string $name) {}
 
-    /**
-     * @param  array<array-key, mixed>|callable|null  $exportStyle
-     * @param  array<array-key, mixed>  $meta
-     */
-    public static function make(
-        string $name,
-        string|callable|null $label = null,
-        bool $sortable = false,
-        bool $toggleable = true,
-        bool $searchable = false,
-        string|ColumnAlignment|null $alignment = null,
-        ?callable $mapAs = null,
-        bool $visible = true,
-        ?callable $sortUsing = null,
-        array $meta = [],
-        bool $sticky = false,
-        ?callable $searchUsing = null,
-        ?string $key = null,
-        ?string $labelClass = null,
-        ?string $cellClass = null,
-        false|callable|null $exportAs = null,
-        string|callable|null $exportLabel = null,
-        ?string $exportFormat = null,
-        array|callable|null $exportStyle = null,
-    ): static {
-        $options = get_defined_vars();
-        unset($options['name']);
+    public static function make(string $name): static
+    {
+        throw_if(func_num_args() > 1, ArgumentCountError::class, 'Use fluent methods for additional factory configuration.');
 
-        return static::fromOptions($name, $options);
+        // @phpstan-ignore new.staticInAbstractClassStaticMethod (Consumers inherit this factory with a consistent constructor.)
+        return new static($name);
     }
 
     public function type(): string
@@ -279,30 +256,5 @@ abstract class Column
         }
 
         return $column;
-    }
-
-    /** @param ColumnOptions $options */
-    protected static function fromOptions(string $name, array $options): static
-    {
-        // @phpstan-ignore new.staticInAbstractClassStaticMethod (Consumers inherit this factory with a consistent constructor.)
-        return new static($name)
-            ->key($options['key'])
-            ->label($options['label'])
-            ->mapAs($options['mapAs'])
-            ->visible($options['visible'])
-            ->sortable($options['sortable'])
-            ->searchable($options['searchable'])
-            ->alignment($options['alignment'])
-            ->meta($options['meta'])
-            ->toggleable($options['toggleable'])
-            ->sticky($options['sticky'])
-            ->sortUsing($options['sortUsing'])
-            ->searchUsing($options['searchUsing'])
-            ->labelClass($options['labelClass'])
-            ->cellClass($options['cellClass'])
-            ->exportAs($options['exportAs'])
-            ->exportLabel($options['exportLabel'])
-            ->exportFormat($options['exportFormat'])
-            ->exportStyle($options['exportStyle']);
     }
 }

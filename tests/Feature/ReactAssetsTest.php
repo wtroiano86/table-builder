@@ -57,20 +57,20 @@ it('keeps the shared React payload fixture aligned with real backend serializati
         ->resource(PipelineRecord::class)->authorize(true)->defaultSort('name')->perPage(2)->perPageOptions([2, 10])
         ->rowSelectionKey('code')->stickyHeader()->selectableUsing(static fn (Model $model): bool => $model->getKey() !== 2)
         ->columns([
-            TextColumn::make('name', label: 'Name', sortable: true, searchable: true)->image(static fn (Model $model, Image $image): Image => $image->url('/avatar.svg')->alt($model->getAttribute('name'))->rounded()),
-            TextColumn::make('code', label: 'Account', mapAs: static fn (mixed $value): string => 'DISPLAY-'.mb_strtoupper($value), visible: false),
+            TextColumn::make('name')->label('Name')->sortable()->searchable()->image(static fn (Model $model, Image $image): Image => $image->url('/avatar.svg')->alt($model->getAttribute('name'))->rounded()),
+            TextColumn::make('code')->label('Account')->mapAs(static fn (mixed $value): string => 'DISPLAY-'.mb_strtoupper($value))->visible(false),
             BadgeColumn::make('team')->colors(['Engineering' => 'blue', 'Operations' => 'green']),
-            BooleanColumn::make('active', mapAs: static fn (mixed $value, Model $model): bool => $model->getKey() === 1)->trueLabel('Active')->falseLabel('Inactive'),
-            NumericColumn::make('balance', mapAs: static fn (): float => 3475.5)->precision(2)->prefix('$'),
-            DateColumn::make('joined', mapAs: static fn (): string => '2026-01-02')->format('M j, Y'),
+            BooleanColumn::make('active')->mapAs(static fn (mixed $value, Model $model): bool => $model->getKey() === 1)->trueLabel('Active')->falseLabel('Inactive'),
+            NumericColumn::make('balance')->mapAs(static fn (): float => 3475.5)->precision(2)->prefix('$'),
+            DateColumn::make('joined')->mapAs(static fn (): string => '2026-01-02')->format('M j, Y'),
         ])
         ->actions([
             Action::make('Edit')->key('edit')->url(static fn (Model $model): string => '/records/'.$model->getKey()),
             Action::make('Archive')->key('archive')->asBulkAction()->confirm('Archive records?', 'This will archive the selected records.', 'Archive', 'Keep records')->handle(static fn (): null => null),
         ])->exports([
-            Export::make('Download records', 'records.xlsx')->key('records')->limitToFilteredRows(),
-            Export::make('Download selected', 'selected.xlsx')->key('selected')->limitToFilteredRows()->limitToSelectedRows(),
-            Export::make('Queue export', 'records.xlsx')->key('background')->queue(),
+            Export::make('Download records')->filename('records.xlsx')->key('records')->limitToFilteredRows(),
+            Export::make('Download selected')->filename('selected.xlsx')->key('selected')->limitToFilteredRows()->limitToSelectedRows(),
+            Export::make('Queue export')->filename('records.xlsx')->key('background')->queue(),
         ])->emptyState(TableEmptyState::make('No matching people', 'Try a different name or clear your search.')));
 
     $payload = TableRegistry::get('react-records')->results();
@@ -85,7 +85,7 @@ it('keeps the shared React payload fixture aligned with real backend serializati
 it('round trips visibility defaults so the column picker can reveal initially hidden columns', function (): void {
     DatabaseFixtures::pipelineRecords([['id' => 1, 'name' => 'Ada', 'team' => 'Engineering', 'code' => 'raw']]);
     $table = TableBuilder::make('people')->resource(PipelineRecord::class)->columns([
-        TextColumn::make('name'), TextColumn::make('code', visible: false),
+        TextColumn::make('name'), TextColumn::make('code')->visible(false),
     ])->build();
     expect($table->state()->columns())->toBe(['code'])
         ->and($table->results()['state']['columns'])->toBe(['name' => true, 'code' => false]);

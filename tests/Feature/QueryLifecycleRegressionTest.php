@@ -51,7 +51,7 @@ it('qualifies aliases in selected actions and filtered selected exports', functi
     $this->table->aliased = true;
     $this->postJson(route('table-builder.actions.execute'), ['table' => QueryLifecycleTable::class, 'action' => 'run', 'keys' => [1, 3]])
         ->assertOk()->assertJson(['processed' => 2, 'results' => [1, 3]]);
-    $this->table->definition = Export::make('Selected', 'selected.xlsx')->key('records')->limitToFilteredRows()->limitToSelectedRows()->asDownload(false);
+    $this->table->definition = Export::make('Selected')->filename('selected.xlsx')->key('records')->limitToFilteredRows()->limitToSelectedRows()->asDownload(false);
     Excel::shouldReceive('store')->once()->andReturnUsing(static function (TableExcelExport $export): bool {
         expect($export->query()->get()->modelKeys())->toBe([3]);
 
@@ -153,7 +153,7 @@ it('preserves cursor identity with raw select lists without duplicating existing
 
 it('reports storage failures without successful flashes or dialogs', function (bool $inertia): void {
     Exceptions::fake();
-    $this->table->definition = Export::make('Records', 'records.xlsx')->key('records')->redirectBackWithDialog('Preparing', 'A success dialog');
+    $this->table->definition = Export::make('Records')->filename('records.xlsx')->key('records')->redirectBackWithDialog('Preparing', 'A success dialog');
     Excel::shouldReceive('store')->once()->andReturn(false);
     $input = ['table' => QueryLifecycleTable::class, 'export' => 'records'];
     if ($inertia) {
@@ -180,7 +180,7 @@ it('reuses a prepared query while keeping each synchronous query call isolated',
 });
 
 it('retains custom query changes when a synchronous custom exporter falls through', function (): void {
-    $this->table->definition = Export::make('Records', 'records.xlsx')->key('records')->asDownload(false)
+    $this->table->definition = Export::make('Records')->filename('records.xlsx')->key('records')->asDownload(false)
         ->using(static function (QueryLifecycleTable $table, Export $definition, mixed $request, Builder $query): mixed {
             $query->where('quality_parents.id', 3);
 
@@ -196,7 +196,7 @@ it('retains custom query changes when a synchronous custom exporter falls throug
 });
 
 it('defers queued preparation and reconstructs filters from serializable inputs', function (): void {
-    $this->table->definition = Export::make('Records', 'records.xlsx')->key('records')->limitToFilteredRows()->queue();
+    $this->table->definition = Export::make('Records')->filename('records.xlsx')->key('records')->limitToFilteredRows()->queue();
     $this->postJson(route('table-builder.exports.execute'), ['table' => QueryLifecycleTable::class, 'export' => 'records', 'state' => ['search' => 'Ada']])->assertOk();
     expect($this->table->queryCalls)->toBe(0);
     Excel::assertQueued('records.xlsx', static function (TableExcelExport $export): bool {
@@ -210,7 +210,7 @@ it('defers queued preparation and reconstructs filters from serializable inputs'
 
 it('supports callable-array redirects while preserving route configuration arrays', function (bool $callable): void {
     Route::get('/completed/records', static fn (): string => 'Done')->name('review.completed');
-    $this->table->definition = Export::make('Records', 'records.xlsx')->key('records')->asDownload(false)
+    $this->table->definition = Export::make('Records')->filename('records.xlsx')->key('records')->asDownload(false)
         ->redirect($callable ? ExportRedirect::CALLBACK : ['route' => 'review.completed']);
     Excel::shouldReceive('store')->once()->andReturn(true);
     $this->from('/records')->post(route('table-builder.exports.execute'), ['table' => QueryLifecycleTable::class, 'export' => 'records'], ['X-Inertia' => 'true'])
@@ -256,7 +256,7 @@ it('preserves limited resource rows through forward and backward cursor navigati
 
 it('preserves scoped ordering and constraints in synchronous and reconstructed exports', function (bool $queued): void {
     $this->table->scoped = true;
-    $this->table->definition = Export::make('Records', 'records.xlsx')->key('records')->asDownload(false);
+    $this->table->definition = Export::make('Records')->filename('records.xlsx')->key('records')->asDownload(false);
 
     $verify = static function (TableExcelExport $export): bool {
         expect($export->query()->get()->modelKeys())->toBe([3, 1, 2])

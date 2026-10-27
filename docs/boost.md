@@ -8,7 +8,7 @@ Install the package as a direct Composer dependency, then install Boost as a dev
 
 ```sh
 composer config repositories.table-builder vcs https://github.com/wtroiano86/table-builder.git
-composer require wtroiano/table-builder:^1.0
+composer require wtroiano/table-builder:^2.0
 composer require laravel/boost --dev
 php artisan boost:install
 ```

@@ -64,7 +64,7 @@ it('supports belongs-to relation sorting', function (): void {
 
         public function columns(): array
         {
-            return [TextColumn::make('parent.name', sortable: true)];
+            return [TextColumn::make('parent.name')->sortable()];
         }
     };
     $query = $table->apply(request: TableRequest::fromArray(['sort' => 'parent.name', 'direction' => 'desc']));
@@ -161,7 +161,7 @@ it('renders and exports qualified column values from hydrated model attributes',
 
         public function columns(): array
         {
-            return [TextColumn::make($this->aliased ? 'p.name' : 'quality_parents.name', sortable: true, searchable: true)
+            return [TextColumn::make($this->aliased ? 'p.name' : 'quality_parents.name')->sortable()->searchable()
                 ->mapAs(static fn (?string $name): ?string => $name === null ? null : mb_strtoupper($name))];
         }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Wtroiano\TableBuilder\Columns;
 
+use ArgumentCountError;
 use Wtroiano\TableBuilder\Enums\ColumnAlignment;
 
 final class ActionColumn extends Column
@@ -15,38 +16,11 @@ final class ActionColumn extends Column
         $this->alignment = ColumnAlignment::Center;
     }
 
-    /**
-     * @param  array<array-key, mixed>  $meta
-     * @param  array<array-key, mixed>|callable|null  $exportStyle
-     */
-    public static function make(
-        string $name = 'actions',
-        string|callable|null $label = null,
-        bool $sortable = false,
-        bool $toggleable = true,
-        bool $searchable = false,
-        string|ColumnAlignment|null $alignment = null,
-        ?callable $mapAs = null,
-        bool $visible = true,
-        ?callable $sortUsing = null,
-        array $meta = [],
-        bool $sticky = false,
-        ?callable $searchUsing = null,
-        ?string $key = null,
-        ?string $labelClass = null,
-        ?string $cellClass = null,
-        false|callable|null $exportAs = null,
-        string|callable|null $exportLabel = null,
-        ?string $exportFormat = null,
-        array|callable|null $exportStyle = null,
-        bool $asDropdown = false,
-    ): static {
-        $options = get_defined_vars();
-        unset($options['name'], $options['asDropdown']);
+    public static function make(string $name = 'actions'): static
+    {
+        throw_if(func_num_args() > 1, ArgumentCountError::class, 'Use fluent methods for additional factory configuration.');
 
-        $column = self::fromOptions($name, $options);
-
-        return $asDropdown ? $column->asDropdown() : $column;
+        return new self($name);
     }
 
     public function asDropdown(bool $asDropdown = true): static

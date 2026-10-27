@@ -49,7 +49,7 @@ it('routes every job in a real export chain to the configured queue', function (
     config()->set('excel.exports.chunk_size', 1);
     Bus::fake();
     $table = ExportFlowTable::make();
-    $table->definition = Export::make('Report', 'report.xlsx')->key('report')->queue('report.xlsx', 'local');
+    $table->definition = Export::make('Report')->filename('report.xlsx')->key('report')->queue('report.xlsx', 'local');
 
     app()->instance(ExportFlowTable::class, $table);
     Export::defaultQueueName('reports');

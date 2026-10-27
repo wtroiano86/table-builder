@@ -51,7 +51,7 @@ final class QueryLifecycleTable extends Table
 
     public function columns(): array
     {
-        return [TextColumn::make($this->field, sortable: true, searchable: true)];
+        return [TextColumn::make($this->field)->sortable()->searchable()];
     }
 
     public function actions(): array
@@ -70,7 +70,7 @@ final class QueryLifecycleTable extends Table
 
     public function exports(): array
     {
-        return [$this->definition ?? Export::make('Records', 'records.xlsx')->key('records')->limitToFilteredRows()->asDownload(false)];
+        return [$this->definition ?? Export::make('Records')->filename('records.xlsx')->key('records')->limitToFilteredRows()->asDownload(false)];
     }
 
     public function query(): Builder

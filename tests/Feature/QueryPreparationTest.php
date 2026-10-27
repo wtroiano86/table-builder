@@ -63,7 +63,7 @@ it('runs custom search before sort and keeps callbacks isolated from the shared 
 
         public function columns(): array
         {
-            return [TextColumn::make('name', sortable: true)->sortUsing(function (Builder $query): void {
+            return [TextColumn::make('name')->sortable()->sortUsing(function (Builder $query): void {
                 $this->events[] = 'sort';
                 $query->orderBy('id', 'desc');
             })];

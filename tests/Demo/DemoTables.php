@@ -25,14 +25,14 @@ final class DemoTables
         TableRegistry::define('demo-customers', static fn (): TableBuilder => self::base('customers', Customer::class)
             ->defaultSort('name')
             ->columns([
-                TextColumn::make('name', label: 'Customer', sortable: true, searchable: true),
-                TextColumn::make('company', sortable: true, searchable: true),
-                TextColumn::make('email', searchable: true, visible: false),
-                BadgeColumn::make('plan', sortable: true)->colors(['Enterprise' => 'purple', 'Pro' => 'blue', 'Starter' => 'gray']),
+                TextColumn::make('name')->label('Customer')->sortable()->searchable(),
+                TextColumn::make('company')->sortable()->searchable(),
+                TextColumn::make('email')->searchable()->visible(false),
+                BadgeColumn::make('plan')->sortable()->colors(['Enterprise' => 'purple', 'Pro' => 'blue', 'Starter' => 'gray']),
                 BooleanColumn::make('active')->trueLabel('Active')->falseLabel('Inactive'),
-                NumericColumn::make('revenue', label: 'Revenue', sortable: true)->precision(2)->prefix('$'),
-                DateColumn::make('joined', sortable: true)->format('M j, Y'),
-                ActionColumn::make(toggleable: false, alignment: 'right'),
+                NumericColumn::make('revenue')->label('Revenue')->sortable()->precision(2)->prefix('$'),
+                DateColumn::make('joined')->sortable()->format('M j, Y'),
+                ActionColumn::make()->toggleable(false)->alignment('right'),
             ])
             ->actions([
                 Action::make('Deactivate')->key('deactivate')->asBulkAction()
@@ -48,13 +48,13 @@ final class DemoTables
         TableRegistry::define('demo-invoices', static fn (): TableBuilder => self::base('invoices', Invoice::class)
             ->defaultSort('-number')
             ->columns([
-                TextColumn::make('number', label: 'Invoice', sortable: true, searchable: true),
-                TextColumn::make('company', label: 'Customer', sortable: true, searchable: true),
-                BadgeColumn::make('status', sortable: true)->colors(['Paid' => 'green', 'Pending' => 'blue', 'Overdue' => 'red', 'Draft' => 'gray']),
-                NumericColumn::make('amount', sortable: true)->precision(2)->prefix('$'),
-                DateColumn::make('issued', sortable: true)->format('M j, Y'),
-                DateColumn::make('due', sortable: true)->format('M j, Y'),
-                ActionColumn::make(toggleable: false, alignment: 'right'),
+                TextColumn::make('number')->label('Invoice')->sortable()->searchable(),
+                TextColumn::make('company')->label('Customer')->sortable()->searchable(),
+                BadgeColumn::make('status')->sortable()->colors(['Paid' => 'green', 'Pending' => 'blue', 'Overdue' => 'red', 'Draft' => 'gray']),
+                NumericColumn::make('amount')->sortable()->precision(2)->prefix('$'),
+                DateColumn::make('issued')->sortable()->format('M j, Y'),
+                DateColumn::make('due')->sortable()->format('M j, Y'),
+                ActionColumn::make()->toggleable(false)->alignment('right'),
             ])
             ->actions([
                 Action::make('Mark paid')->key('mark-paid')->asBulkAction()
@@ -71,9 +71,9 @@ final class DemoTables
         return TableBuilder::make($name)->resource($model)->authorize(true)
             ->perPage(8)->perPageOptions([8, 16, 24])->stickyHeader()
             ->exports([
-                Export::make('Download Excel', $name.'.xlsx')->key('xlsx')->limitToFilteredRows(),
-                Export::make('Download CSV', $name.'.csv', Excel::CSV)->key('csv')->limitToFilteredRows(),
-                Export::make('Export selected', $name.'-selected.xlsx')->key('selected')->limitToFilteredRows()->limitToSelectedRows(),
+                Export::make('Download Excel')->filename($name.'.xlsx')->key('xlsx')->limitToFilteredRows(),
+                Export::make('Download CSV')->filename($name.'.csv')->type(Excel::CSV)->key('csv')->limitToFilteredRows(),
+                Export::make('Export selected')->filename($name.'-selected.xlsx')->key('selected')->limitToFilteredRows()->limitToSelectedRows(),
             ])
             ->emptyState(TableEmptyState::make('No matching '.$name, 'Try another search or reset the demo to restore the sample data.'));
     }

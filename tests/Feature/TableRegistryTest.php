@@ -109,8 +109,8 @@ it('keeps destructive select-all actions inside an unordered bounded fluent reso
 it('prepares filtered selected registered exports and reconstructs them from serialized inputs', function (): void {
     Excel::fake();
     TableRegistry::define('accounts', static fn (): TableBuilder => TableBuilder::make('people')->resource(PipelineRecord::class)
-        ->columns([TextColumn::make('name', sortable: true, searchable: true)])
-        ->exports([Export::make('Records', 'people.xlsx')->key('records')->limitToFilteredRows()->limitToSelectedRows()->asDownload(false)]));
+        ->columns([TextColumn::make('name')->sortable()->searchable()])
+        ->exports([Export::make('Records')->filename('people.xlsx')->key('records')->limitToFilteredRows()->limitToSelectedRows()->asDownload(false)]));
     Excel::shouldReceive('store')->once()->andReturnUsing(static function (TableExcelExport $export): bool {
         expect($export->__serialize()['tableClass'])->toBe('registry:accounts')
             ->and($export->query()->get()->modelKeys())->toBe([1])
@@ -134,8 +134,8 @@ it('reconstructs queued registered exports in captured context including column 
 
         return TableBuilder::make('people')
             ->resource(static fn (): Builder => PipelineRecord::query()->where('team', Context::get('team')))
-            ->columns(static fn (): array => [TextColumn::make('name'), TextColumn::make('team', label: 'Team '.Context::get('team'))])
-            ->exports(static fn (): array => [Export::make('People', 'people.xlsx')->key('people')->queue()->events([
+            ->columns(static fn (): array => [TextColumn::make('name'), TextColumn::make('team')->label('Team '.Context::get('team'))])
+            ->exports(static fn (): array => [Export::make('People')->filename('people.xlsx')->key('people')->queue()->events([
                 AfterSheet::class => static fn (AfterSheet $event): mixed => $event->sheet->getDelegate()->setCellValue('C1', Context::get('team')),
             ])])->exportContext(
                 capture: static fn (ExportRequest $request): array => ['team' => Context::get('team')],

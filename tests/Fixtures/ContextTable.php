@@ -20,7 +20,7 @@ final class ContextTable extends Table
 
     public function columns(): array
     {
-        return [TextColumn::make('team', label: static fn (): string => 'Team '.Context::get('team'))];
+        return [TextColumn::make('team')->label(static fn (): string => 'Team '.Context::get('team'))];
     }
 
     public function exports(): array

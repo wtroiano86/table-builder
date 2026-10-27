@@ -10,6 +10,7 @@ Start with [Getting started](consumers/getting-started.md) to render a table in 
 
 | Guide | Use it for |
 | --- | --- |
+| [Upgrading to v2](consumers/upgrading.md) | Migrating factory arguments to fluent configuration |
 | [Defining tables](consumers/tables.md) | Fluent builders, subclasses, registry factories, configuration and row hooks |
 | [Columns](consumers/columns.md) | Values, types, formatting, relationships, links, images and export configuration |
 | [React component and page](consumers/react.md) | Publishing the view, embedding it, props, custom cells and themes |

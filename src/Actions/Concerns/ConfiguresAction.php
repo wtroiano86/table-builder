@@ -260,16 +260,4 @@ trait ConfiguresAction
         $this->chunkSize = max(1, $chunkSize);
         $this->chunkStrategy = in_array($chunkStrategy, ['chunkById', 'chunk'], true) ? $chunkStrategy : 'chunkById';
     }
-
-    private function setLifecycleCallbacks(
-        ?callable $before,
-        ?callable $after,
-        ?callable $success,
-        ?callable $error
-    ): void {
-        $this->before = $before !== null ? Closure::fromCallable($before) : null;
-        $this->after = $after !== null ? Closure::fromCallable($after) : null;
-        $this->success = $success !== null ? Closure::fromCallable($success) : null;
-        $this->error = $error !== null ? Closure::fromCallable($error) : null;
-    }
 }

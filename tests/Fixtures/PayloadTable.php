@@ -28,7 +28,7 @@ final class PayloadTable extends Table
 
     public function columns(): array
     {
-        return [TextColumn::make('name', label: fn (): string => 'Label '.++$this->labelCalls, sortable: true)];
+        return [TextColumn::make('name')->label(fn (): string => 'Label '.++$this->labelCalls)->sortable()];
     }
 
     public function transformModel(Model $model, array $data): array

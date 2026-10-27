@@ -19,7 +19,7 @@ This package is distributed through GitHub and is not currently listed on Packag
 
 ```sh
 composer config repositories.table-builder vcs https://github.com/wtroiano86/table-builder.git
-composer require wtroiano/table-builder:^1.0
+composer require wtroiano/table-builder:^2.0
 php artisan vendor:publish --tag=table-builder-react
 php artisan vendor:publish --tag=table-builder-react-page
 ```
@@ -56,7 +56,7 @@ final class UsersController
             ->resource(User::class)
             ->authorize(fn (Request $request): bool => $request->user()?->can('viewAny', User::class) ?? false)
             ->columns([
-                TextColumn::make('name', sortable: true, searchable: true),
+                TextColumn::make('name')->sortable()->searchable(),
                 TextColumn::make('email')->label('Email address'),
             ])
             ->defaultSort('name')

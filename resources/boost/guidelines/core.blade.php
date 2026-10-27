@@ -2,6 +2,8 @@
 
 Use `Wtroiano\TableBuilder\TableBuilder` for fluent definitions or extend `Wtroiano\TableBuilder\Table`. Columns live in `Wtroiano\TableBuilder\Columns`; actions and exports use `Actions\Action` and `Exports\Export`. Read the installed package documentation at `vendor/wtroiano/table-builder/docs/README.md` from the application root before inventing an API.
 
+Factories accept only the identity: a column/action name or an optional export label. Set all other options fluently, such as `TextColumn::make('name')->sortable()` and `Export::make('Users')->filename('users.xlsx')`. For v1 migrations, read `docs/consumers/upgrading.md` in the installed package.
+
 - Activate `table-builder-development` for PHP tables, columns, scoped queries, URL state and registry factories.
 - Activate `table-builder-react` for the packaged React component/page, customization, transport and themes.
 - Activate `table-builder-actions-exports` for executable actions, downloads, selected/filtered exports and queue context.

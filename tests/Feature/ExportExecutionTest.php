@@ -15,7 +15,7 @@ use Wtroiano\TableBuilder\Tests\Fixtures\ExportFlowTable;
 beforeEach(function (): void {
 
     $this->table = ExportFlowTable::make();
-    $this->table->definition = Export::make('Report', 'report.csv', ExcelWriter::CSV)->key('report');
+    $this->table->definition = Export::make('Report')->filename('report.csv')->type(ExcelWriter::CSV)->key('report');
 
     app()->instance(ExportFlowTable::class, $this->table);
     Excel::fake();

@@ -29,7 +29,7 @@ final class QualityReviewTable extends Table
     {
         $this->columnCalls++;
 
-        return [TextColumn::make($this->field, sortable: true, toggleable: $this->columnToggleable, searchable: $this->columnSearchable)];
+        return [TextColumn::make($this->field)->sortable()->toggleable($this->columnToggleable)->searchable($this->columnSearchable)];
     }
 
     public function actions(): array

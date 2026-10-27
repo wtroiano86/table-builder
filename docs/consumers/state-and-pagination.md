@@ -18,7 +18,7 @@ use Wtroiano\TableBuilder\Columns\TextColumn;
 use Wtroiano\TableBuilder\TableBuilder;
 
 $table = TableBuilder::make('users')->resource(User::class)
-    ->columns([TextColumn::make('name', sortable: true, searchable: true), TextColumn::make('email')])
+    ->columns([TextColumn::make('name')->sortable()->searchable(), TextColumn::make('email')])
     ->perPage(30)->perPageOptions([15, 30, 50])
     ->defaultState(['search' => 'Ada', 'sort' => 'name', 'direction' => 'desc', 'columns' => ['email'], 'sticky' => []])
     ->build();
