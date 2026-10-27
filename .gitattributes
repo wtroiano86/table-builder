@@ -21,6 +21,7 @@
 /tests export-ignore
 /phpunit.xml export-ignore
 /phpstan.neon export-ignore
+/.sloppy-baseline.json export-ignore
 /pint.json export-ignore
 /composer.lock export-ignore
 /rector.php export-ignore

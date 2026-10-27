@@ -1,9 +1,11 @@
 <?php
 
 declare(strict_types=1);
+
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Cursor;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Excel as ExcelWriter;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Maatwebsite\Excel\Facades\Excel;
@@ -133,7 +135,7 @@ it('preserves named table filters in a serialized export and a real styled sprea
             ->and($sheet->getHighestDataRow())->toBe(3)
             ->and($sheet->getStyle('A2')->getFont()->getBold())->toBeTrue();
     } finally {
-        unlink($path);
+        File::delete($path);
     }
 });
 
@@ -171,7 +173,7 @@ it('canonicalizes generator paths before deriving their namespaces', function (s
             ->and(file_get_contents($path))->toContain('namespace App\\Tables;');
     } finally {
         if (is_file($path)) {
-            unlink($path);
+            File::delete($path);
         }
     }
 })->with(['./app/Tables', 'app/Admin/../Tables', './app//Tables']);

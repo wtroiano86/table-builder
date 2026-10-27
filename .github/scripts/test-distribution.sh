@@ -37,7 +37,7 @@ if grep -Eq '^(vite\.demo\.config\.ts|playwright\.demo\.config\.ts)$' "$director
     echo 'Demo tooling leaked into the distribution.' >&2
     exit 1
 fi
-if grep -Eq '(^|/)(\._[^/]*|\.DS_Store)$|^(vendor/|node_modules/|tests/|\.github/|\.idea/|\.ijfw/|ijfw/|\.planning/|tmp/|temp/|\.phpstan/|\.phpunit.cache/|AGENTS\.md$|DESIGN\.md$|composer\.lock$|composer\.local\.(json|lock)$|package(-lock)?\.json$|tsconfig\.json$|vitest\.config\.ts$|vite\.preview\.config\.ts$|playwright\.config\.ts$|playwright-report/|test-results/)' "$directory/files"; then
+if grep -Eq '(^|/)(\._[^/]*|\.DS_Store)$|^(vendor/|node_modules/|tests/|\.github/|\.idea/|\.ijfw/|ijfw/|\.planning/|tmp/|temp/|\.phpstan/|\.phpunit.cache/|\.sloppy-baseline\.json$|AGENTS\.md$|DESIGN\.md$|composer\.lock$|composer\.local\.(json|lock)$|package(-lock)?\.json$|tsconfig\.json$|vitest\.config\.ts$|vite\.preview\.config\.ts$|playwright\.config\.ts$|playwright-report/|test-results/)' "$directory/files"; then
     echo 'Development files leaked into the distribution.' >&2
     exit 1
 fi

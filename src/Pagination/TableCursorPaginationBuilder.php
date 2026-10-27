@@ -24,13 +24,41 @@ final class TableCursorPaginationBuilder
      */
     public function paginate(Builder $query, Table $table, TableState $state): CursorPaginator
     {
-        $model = $query->getModel();
         $base = clone $query->toBase();
         $scoped = clone $query;
         $scoped->setQuery($base);
 
+        $orders = $this->prepareCursorColumns($scoped);
+
+        // Materialize computed values once so cursor predicates use columns, including bindings.
+        $outer = clone $query;
+        $outer->withoutGlobalScopes()->setQuery($base->newQuery()->fromSub($base, '_inertia_cursor')->select('_inertia_cursor.*'));
+
+        $cursor = $this->decodeCursor($state->cursor(), $orders);
+        $reverse = $cursor?->pointsToPreviousItems() ?? false;
+
+        if ($cursor instanceof Cursor) {
+            $this->constrain($outer, $orders, $cursor, $reverse);
+        }
+
+        $this->applyCursorOrder($outer, $orders, $reverse);
+
+        return new CursorPaginator($outer->limit($state->perPage() + 1)->get(), $state->perPage(), $cursor, [
+            'path' => Paginator::resolveCurrentPath(),
+            'cursorName' => $table->cursorName(),
+            'parameters' => array_column($orders, 'column'),
+        ]);
+    }
+
+    /**
+     * @param  Builder<Model>  $scoped
+     * @return list<array{column: string, direction: 'asc'|'desc'}>
+     */
+    private function prepareCursorColumns(Builder $scoped): array
+    {
+        $base = $scoped->getQuery();
         $orders = $base->orders ?? [];
-        $key = QuerySource::qualify($scoped, $model->getKeyName());
+        $key = QuerySource::qualify($scoped, $scoped->getModel()->getKeyName());
 
         if (! array_any($orders, static fn (mixed $order): bool => is_array($order) && is_string($order['column'] ?? null) && QuerySource::qualify($scoped, $order['column']) === $key)) {
             $orders[] = ['column' => $key, 'direction' => 'asc'];
@@ -63,27 +91,19 @@ final class TableCursorPaginationBuilder
             $base->reorder();
         }
 
-        // Materialize computed values once so cursor predicates use columns, including bindings.
-        $outer = clone $query;
-        $outer->withoutGlobalScopes()->setQuery($base->newQuery()->fromSub($base, '_inertia_cursor')->select('_inertia_cursor.*'));
+        return $cursorOrders;
+    }
 
-        $cursor = $this->decodeCursor($state->cursor(), $cursorOrders);
-        $reverse = $cursor?->pointsToPreviousItems() ?? false;
-
-        if ($cursor instanceof Cursor) {
-            $this->constrain($outer, $cursorOrders, $cursor, $reverse);
-        }
-
-        foreach ($cursorOrders as $order) {
+    /**
+     * @param  Builder<Model>  $query
+     * @param  list<array{column: string, direction: 'asc'|'desc'}>  $orders
+     */
+    private function applyCursorOrder(Builder $query, array $orders, bool $reverse): void
+    {
+        foreach ($orders as $order) {
             $direction = $reverse ? ($order['direction'] === 'asc' ? 'desc' : 'asc') : $order['direction'];
-            $outer->orderBy(new NullsLastOrder($order['column']), $reverse ? 'desc' : 'asc')->orderBy($order['column'], $direction);
+            $query->orderBy(new NullsLastOrder($order['column']), $reverse ? 'desc' : 'asc')->orderBy($order['column'], $direction);
         }
-
-        return new CursorPaginator($outer->limit($state->perPage() + 1)->get(), $state->perPage(), $cursor, [
-            'path' => Paginator::resolveCurrentPath(),
-            'cursorName' => $table->cursorName(),
-            'parameters' => array_column($cursorOrders, 'column'),
-        ]);
     }
 
     private function isSelectedAlias(QueryBuilder $query, string $column): bool

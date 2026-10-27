@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Context;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Excel as ExcelWriter;
 use Maatwebsite\Excel\ExcelServiceProvider;
@@ -165,7 +166,7 @@ it('writes untrusted text literally into real XLSX and CSV files', function (str
         $cell = IOFactory::load($path)->getActiveSheet()->getCell('A2');
         expect($cell->getDataType())->toBe('s')->and($cell->getValue())->toBe($value);
     } finally {
-        unlink($path);
+        File::delete($path);
     }
 
     $csvExport = TableExcelExport::fromRequest($this->table, Export::make(type: ExcelWriter::CSV), $request);

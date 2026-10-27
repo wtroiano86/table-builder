@@ -1,0 +1,49 @@
+{
+    "schema": 1,
+    "tool": "sloppy",
+    "generated_at": "2026-10-27T18:37:47+00:00",
+    "score": 97,
+    "total": 5,
+    "entries": [
+        {
+            "id": "eb04a390e0f95839",
+            "rule": "SL113",
+            "file": "src/Actions/Action.php",
+            "fingerprint": "Action::make",
+            "count": 1,
+            "message": "Action::make() takes 24 parameters, past the limit of 7. Accepted to preserve existing positional and named factory arguments; use fluent setters for new configuration. Remove with an intentional breaking factory migration."
+        },
+        {
+            "id": "80b5e87f5531d40b",
+            "rule": "SL113",
+            "file": "src/Columns/ActionColumn.php",
+            "fingerprint": "ActionColumn::make",
+            "count": 1,
+            "message": "ActionColumn::make() takes 20 parameters, past the limit of 7. Accepted to preserve existing positional and named factory arguments; use fluent setters for new configuration. Remove with an intentional breaking factory migration."
+        },
+        {
+            "id": "b964de6bd014b096",
+            "rule": "SL113",
+            "file": "src/Columns/Column.php",
+            "fingerprint": "Column::make",
+            "count": 1,
+            "message": "Column::make() takes 19 parameters, past the limit of 7. Accepted to preserve existing positional and named factory arguments; use fluent setters for new configuration. Remove with an intentional breaking factory migration."
+        },
+        {
+            "id": "ecb0bd514e3e5c64",
+            "rule": "SL113",
+            "file": "src/Columns/SerialNumberColumn.php",
+            "fingerprint": "SerialNumberColumn::make",
+            "count": 1,
+            "message": "SerialNumberColumn::make() takes 19 parameters, past the limit of 7. Accepted to preserve existing positional and named factory arguments; use fluent setters for new configuration. Remove with an intentional breaking factory migration."
+        },
+        {
+            "id": "7da4aaa2de441696",
+            "rule": "SL113",
+            "file": "src/Exports/Export.php",
+            "fingerprint": "Export::make",
+            "count": 1,
+            "message": "Export::make() takes 11 parameters, past the limit of 7. Accepted to preserve existing positional and named factory arguments; use fluent setters for new configuration. Remove with an intentional breaking factory migration."
+        }
+    ]
+}

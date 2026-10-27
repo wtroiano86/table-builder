@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Wtroiano\TableBuilder\Pipelines\TableQuery\TableQueryBuilder;
 
@@ -27,7 +28,7 @@ it('generates a table from the packaged stub', function (): void {
             ->and(file_get_contents($path))->toContain('namespace App\\Tables;', 'use Wtroiano\\TableBuilder\\Table;', 'final class ExampleTable extends Table', 'declare(strict_types=1);');
     } finally {
         if (is_file($path)) {
-            unlink($path);
+            File::delete($path);
         }
     }
 });

@@ -111,26 +111,45 @@ final readonly class ApplySort
         $query->mergeConstraintsFrom($relation->getQuery());
 
         $singular = $relation instanceof HasOne || $relation instanceof BelongsTo;
+        $query = $singular ? $this->applySingularRelationOrder($query, $relation, $relatedTable) : $query->reorder();
 
-        if ($singular) {
-            $orders = $relation->getQuery()->getQuery()->orders;
-            foreach ($orders ?? [] as $index => $order) {
-                if (is_array($order) && is_string($order['column'] ?? null) && str_starts_with($order['column'], $relatedTable.'.')) {
-                    $order['column'] = QuerySource::qualify($query, mb_substr($order['column'], mb_strlen($relatedTable) + 1));
-                    $orders[$index] = $order;
-                }
-            }
+        return $this->selectRelationSortValue($query, $segments, $column, $direction, $singular)?->limit(1);
+    }
 
-            $query->getQuery()->orders = $orders;
-            $query->getQuery()->setBindings($relation->getQuery()->getQuery()->getRawBindings()['order'], 'order');
-            $query = $query->applyScopes()->withoutGlobalScopes();
-            if (($query->getQuery()->orders ?? []) === []) {
-                $query->orderBy(QuerySource::qualify($query, $query->getModel()->getKeyName()));
+    /**
+     * @param  Builder<Model>  $query
+     * @param  BelongsTo<Model, Model>|HasOne<Model, Model>  $relation
+     * @return Builder<Model>
+     */
+    private function applySingularRelationOrder(Builder $query, BelongsTo|HasOne $relation, string $relatedTable): Builder
+    {
+        $relationQuery = $relation->getQuery()->getQuery();
+        $orders = $relationQuery->orders;
+        foreach ($orders ?? [] as $index => $order) {
+            if (is_array($order) && is_string($order['column'] ?? null) && str_starts_with($order['column'], $relatedTable.'.')) {
+                $order['column'] = QuerySource::qualify($query, mb_substr($order['column'], mb_strlen($relatedTable) + 1));
+                $orders[$index] = $order;
             }
-        } else {
-            $query->reorder();
         }
 
+        $query->getQuery()->orders = $orders;
+        $query->getQuery()->setBindings($relationQuery->getRawBindings()['order'], 'order');
+        $query = $query->applyScopes()->withoutGlobalScopes();
+        if (($query->getQuery()->orders ?? []) === []) {
+            $query->orderBy(QuerySource::qualify($query, $query->getModel()->getKeyName()));
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param  Builder<Model>  $query
+     * @param  list<string>  $segments
+     * @param  'asc'|'desc'  $direction
+     * @return Builder<Model>|null
+     */
+    private function selectRelationSortValue(Builder $query, array $segments, string $column, string $direction, bool $singular): ?Builder
+    {
         $query->select([]);
 
         if ($segments !== []) {
@@ -155,7 +174,7 @@ final readonly class ApplySort
             }
         }
 
-        return $query->limit(1);
+        return $query;
     }
 
     private function isSafeIdentifier(string $identifier): bool

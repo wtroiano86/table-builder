@@ -20,7 +20,7 @@ it('resolves generator directories and namespaces together', function (string $i
             ->and(file_get_contents($path))->toContain('namespace '.$namespace.';', 'use App\\Models\\User;', 'protected ?string $resource = User::class;');
     } finally {
         if (is_file($path)) {
-            unlink($path);
+            File::delete($path);
         }
     }
 })->with([
@@ -42,7 +42,7 @@ it('uses legacy generator configuration when the canonical option is empty', fun
             ->and(file_get_contents($path))->toContain('namespace App\\Legacy\\Tables;');
     } finally {
         if (is_file($path)) {
-            unlink($path);
+            File::delete($path);
         }
     }
 });

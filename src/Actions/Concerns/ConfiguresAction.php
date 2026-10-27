@@ -138,30 +138,16 @@ trait ConfiguresAction
         if (is_bool($title)) {
             $this->confirm = $title;
         } elseif (is_array($title)) {
-            $this->confirm = array_map(
-                static fn (mixed $value): mixed => is_callable($value) && ! is_string($value)
-                    ? Closure::fromCallable($value)
-                    : $value,
-                $title
-            );
-        } elseif ($title instanceof Closure || (is_callable($title) && ! is_string($title))) {
-            if ($message === null && $confirmButton === null && $cancelButton === null) {
-                $this->confirm = Closure::fromCallable($title);
-            } else {
-                $this->confirm = [
-                    'title' => Closure::fromCallable($title),
-                    'message' => is_callable($message) && ! is_string($message) ? Closure::fromCallable($message) : $message,
-                    'confirmButton' => is_callable($confirmButton) && ! is_string($confirmButton) ? Closure::fromCallable($confirmButton) : $confirmButton,
-                    'cancelButton' => is_callable($cancelButton) && ! is_string($cancelButton) ? Closure::fromCallable($cancelButton) : $cancelButton,
-                ];
-            }
+            $this->confirm = $this->normalizeConfirmationFields($title);
+        } elseif (! is_string($title) && $message === null && $confirmButton === null && $cancelButton === null) {
+            $this->confirm = Closure::fromCallable($title);
         } else {
-            $this->confirm = [
+            $this->confirm = $this->normalizeConfirmationFields([
                 'title' => $title,
-                'message' => is_callable($message) && ! is_string($message) ? Closure::fromCallable($message) : $message,
-                'confirmButton' => is_callable($confirmButton) && ! is_string($confirmButton) ? Closure::fromCallable($confirmButton) : $confirmButton,
-                'cancelButton' => is_callable($cancelButton) && ! is_string($cancelButton) ? Closure::fromCallable($cancelButton) : $cancelButton,
-            ];
+                'message' => $message,
+                'confirmButton' => $confirmButton,
+                'cancelButton' => $cancelButton,
+            ]);
         }
 
         return $this;
@@ -247,6 +233,20 @@ trait ConfiguresAction
         $this->data = array_replace($this->data, $data);
 
         return $this;
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $fields
+     * @return array<array-key, mixed>
+     */
+    private function normalizeConfirmationFields(array $fields): array
+    {
+        return array_map(
+            static fn (mixed $value): mixed => is_callable($value) && ! is_string($value)
+                ? Closure::fromCallable($value)
+                : $value,
+            $fields,
+        );
     }
 
     private function setBulkConfiguration(

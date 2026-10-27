@@ -7,14 +7,12 @@ namespace Wtroiano\TableBuilder\Columns;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
-use ReflectionFunction;
-use ReflectionNamedType;
 use Stringable;
+use Wtroiano\TableBuilder\Columns\Concerns\ConfiguresColumnPresentation;
+use Wtroiano\TableBuilder\Columns\Concerns\ExportsColumn;
+use Wtroiano\TableBuilder\Columns\Concerns\ResolvesColumnMedia;
 use Wtroiano\TableBuilder\Concerns\HasFactoryAlias;
 use Wtroiano\TableBuilder\Enums\ColumnAlignment;
-use Wtroiano\TableBuilder\Support\Image;
-use Wtroiano\TableBuilder\Support\Url;
 
 /**
  * @phpstan-consistent-constructor
@@ -24,7 +22,10 @@ use Wtroiano\TableBuilder\Support\Url;
  */
 abstract class Column
 {
+    use ConfiguresColumnPresentation;
+    use ExportsColumn;
     use HasFactoryAlias;
+    use ResolvesColumnMedia;
 
     protected ?string $key = null;
 
@@ -40,53 +41,7 @@ abstract class Column
 
     protected ?Closure $sortUsing = null;
 
-    protected bool $toggleable = true;
-
-    protected bool $sticky = false;
-
-    protected string|int|null $width = null;
-
-    protected string|int|null $minWidth = null;
-
-    protected string|int|null $maxWidth = null;
-
-    protected string|ColumnAlignment|null $alignment = null;
-
-    protected ?string $labelClass = null;
-
-    protected ?string $cellClass = null;
-
-    protected ?string $tooltip = null;
-
-    protected mixed $defaultValue = null;
-
     protected ?Closure $mapAs = null;
-
-    protected bool $exportable = true;
-
-    protected bool $exportFormulas = false;
-
-    protected string|Closure|null $exportLabel = null;
-
-    protected ?Closure $exportAs = null;
-
-    protected ?string $exportFormat = null;
-
-    /**
-     * @var array<array-key, mixed>|Closure|null
-     */
-    protected array|Closure|null $exportStyle = null;
-
-    protected string|Url|Closure|null $url = null;
-
-    protected string|Closure|null $image = null;
-
-    protected ?Closure $configureImage = null;
-
-    /**
-     * @var array<array-key, mixed>
-     */
-    protected array $export = [];
 
     /**
      * @var array<array-key, mixed>
@@ -231,87 +186,6 @@ abstract class Column
         return $this->sortable;
     }
 
-    public function toggleable(bool $toggleable = true): static
-    {
-        $this->toggleable = $toggleable;
-
-        return $this;
-    }
-
-    public function isToggleable(): bool
-    {
-        return $this->toggleable;
-    }
-
-    public function sticky(bool $sticky = true): static
-    {
-        $this->sticky = $sticky;
-
-        return $this;
-    }
-
-    public function alignment(string|ColumnAlignment|null $alignment): static
-    {
-        if ($alignment === null) {
-            return $this;
-        }
-
-        $this->alignment = is_string($alignment)
-            ? ColumnAlignment::tryFrom($alignment) ?? $alignment
-            : $alignment;
-
-        return $this;
-    }
-
-    public function width(string|int|null $width): static
-    {
-        $this->width = $width;
-
-        return $this;
-    }
-
-    public function minWidth(string|int|null $minWidth): static
-    {
-        $this->minWidth = $minWidth;
-
-        return $this;
-    }
-
-    public function maxWidth(string|int|null $maxWidth): static
-    {
-        $this->maxWidth = $maxWidth;
-
-        return $this;
-    }
-
-    public function labelClass(?string $labelClass): static
-    {
-        $this->labelClass = $labelClass;
-
-        return $this;
-    }
-
-    public function cellClass(?string $cellClass): static
-    {
-        $this->cellClass = $cellClass;
-
-        return $this;
-    }
-
-    public function tooltip(?string $tooltip): static
-    {
-        $this->tooltip = $tooltip;
-
-        return $this;
-    }
-
-    public function defaultValue(mixed $defaultValue): static
-    {
-        $this->defaultValue = $defaultValue;
-
-        return $this;
-    }
-
     public function mapAs(?callable $mapAs): static
     {
         if ($mapAs === null) {
@@ -321,124 +195,6 @@ abstract class Column
         $this->mapAs = Closure::fromCallable($mapAs);
 
         return $this;
-    }
-
-    public function url(string|Url|callable|null $url): static
-    {
-        if ($url === null) {
-            return $this;
-        }
-
-        $this->url = is_callable($url) && ! is_string($url)
-            ? Closure::fromCallable($url)
-            : $url;
-
-        return $this;
-    }
-
-    /**
-     * @return string|array<array-key, mixed>|null
-     */
-    public function resolveUrl(mixed $record): string|array|null
-    {
-        if ($this->url === null) {
-            return null;
-        }
-
-        $url = $this->url instanceof Closure
-            ? ($this->url)($record, new Url())
-            : $this->url;
-
-        if ($url instanceof Url) {
-            return $url->toArray();
-        }
-
-        return is_string($url) || is_array($url) ? $url : null;
-    }
-
-    public function image(string|callable|null $image, ?callable $configure = null): static
-    {
-        if ($image !== null) {
-            $this->image = is_callable($image) && ! is_string($image)
-                ? Closure::fromCallable($image)
-                : $image;
-        }
-
-        if ($configure !== null) {
-            $this->configureImage = Closure::fromCallable($configure);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return array{
-     *     url: ?string,
-     *     urls: list<string>,
-     *     icon: ?string,
-     *     size: string,
-     *     width: ?int,
-     *     height: ?int,
-     *     rounded: bool,
-     *     position: string,
-     *     class: string,
-     *     alt: string,
-     *     title: string,
-     *     limit: ?int
-     * }|null
-     */
-    public function resolveImage(mixed $record): ?array
-    {
-        if ($this->image === null && ! $this->configureImage instanceof Closure) {
-            return null;
-        }
-
-        $image = new Image();
-
-        if (is_string($this->image)) {
-            $value = data_get($record, $this->image);
-
-            if (is_string($value) || is_array($value)) {
-                $image->url(is_array($value) ? array_values(array_filter($value, is_string(...))) : $value);
-            }
-        }
-
-        if ($this->image instanceof Closure) {
-            $resolved = $this->invokeImageCallback($this->image, $record, $image);
-
-            if ($resolved instanceof Image) {
-                $image = $resolved;
-            } elseif (is_string($resolved) || is_array($resolved)) {
-                $image->url(is_array($resolved) ? array_values(array_filter($resolved, is_string(...))) : $resolved);
-            }
-        }
-
-        if ($this->configureImage instanceof Closure) {
-            $configured = $this->invokeImageCallback($this->configureImage, $record, $image);
-
-            if ($configured instanceof Image) {
-                $image = $configured;
-            }
-        }
-
-        return $image->toArray();
-    }
-
-    /**
-     * @param  array<array-key, mixed>  $configuration
-     */
-    public function export(array $configuration): static
-    {
-        $enabled = $configuration['enabled'] ?? true;
-        $format = $configuration['format'] ?? null;
-        $style = $configuration['style'] ?? null;
-
-        throw_if(! is_bool($enabled) || ($format !== null && ! is_string($format)) || ($style !== null && ! is_array($style) && ! is_callable($style)), InvalidArgumentException::class, 'Export options require a boolean enabled flag, a string or null format, and an array, callable, or null style.');
-
-        unset($configuration['enabled'], $configuration['format'], $configuration['style'], $configuration['custom']);
-        $this->export = $configuration;
-
-        return $this->dontExport(! $enabled)->exportFormat($format)->exportStyle($style);
     }
 
     /**
@@ -490,118 +246,6 @@ abstract class Column
         return ($this->mapAs)($value, $record);
     }
 
-    public function exportAs(false|callable|null $exportAs = null): static
-    {
-        if ($exportAs === false) {
-            return $this->dontExport();
-        }
-
-        if ($exportAs === null) {
-            return $this;
-        }
-
-        $this->exportAs = Closure::fromCallable($exportAs);
-
-        return $this;
-    }
-
-    public function exportFormat(?string $format): static
-    {
-        $this->exportFormat = $format;
-
-        return $this;
-    }
-
-    /**
-     * @param  array<array-key, mixed>|callable|null  $style
-     */
-    public function exportStyle(array|callable|null $style): static
-    {
-        $this->exportStyle = is_callable($style)
-            ? Closure::fromCallable($style)
-            : $style;
-
-        return $this;
-    }
-
-    public function exportLabel(string|callable|null $label): static
-    {
-        if ($label === null) {
-            return $this;
-        }
-
-        $this->exportLabel = is_string($label)
-            ? $label
-            : Closure::fromCallable($label);
-
-        return $this;
-    }
-
-    public function dontExport(bool $condition = true): static
-    {
-        $this->exportable = ! $condition;
-
-        return $this;
-    }
-
-    public function isExportable(): bool
-    {
-        return $this->exportable;
-    }
-
-    public function resolvedExportLabel(): string
-    {
-        if ($this->exportLabel instanceof Closure) {
-            $label = ($this->exportLabel)();
-
-            return is_scalar($label) || $label instanceof Stringable ? (string) $label : '';
-        }
-
-        return $this->exportLabel ?? $this->resolvedLabel();
-    }
-
-    public function resolveExportValue(mixed $record): mixed
-    {
-        $value = $this->resolveValue($record);
-
-        if (! $this->exportAs instanceof Closure) {
-            return $value;
-        }
-
-        return ($this->exportAs)($value, $record);
-    }
-
-    public function exportFormulas(bool $enabled = true): static
-    {
-        $this->exportFormulas = $enabled;
-
-        return $this;
-    }
-
-    public function allowsExportFormulas(): bool
-    {
-        return $this->exportFormulas;
-    }
-
-    public function resolvedExportFormat(): ?string
-    {
-        return $this->exportFormat;
-    }
-
-    /**
-     * @return array<array-key, mixed>|null
-     */
-    public function resolvedExportStyle(mixed $sheet = null): ?array
-    {
-        if ($this->exportStyle instanceof Closure) {
-            $style = ($this->exportStyle)($sheet, $this);
-
-            return is_array($style) ? $style : null;
-        }
-
-        return $this->exportStyle;
-    }
-
     /**
      * @return ColumnPayload
      */
@@ -640,8 +284,7 @@ abstract class Column
     /** @param ColumnOptions $options */
     protected static function fromOptions(string $name, array $options): static
     {
-        // Consumers inherit this factory; consistent constructors preserve extension safety.
-        // @phpstan-ignore new.staticInAbstractClassStaticMethod
+        // @phpstan-ignore new.staticInAbstractClassStaticMethod (Consumers inherit this factory with a consistent constructor.)
         return new static($name)
             ->key($options['key'])
             ->label($options['label'])
@@ -661,48 +304,5 @@ abstract class Column
             ->exportLabel($options['exportLabel'])
             ->exportFormat($options['exportFormat'])
             ->exportStyle($options['exportStyle']);
-    }
-
-    /** @return array<array-key, mixed> */
-    private function exportConfiguration(): array
-    {
-        $configuration = array_replace($this->export, [
-            'enabled' => $this->exportable,
-            'custom' => $this->exportAs instanceof Closure,
-        ]);
-
-        if ($this->exportFormat !== null) {
-            $configuration['format'] = $this->exportFormat;
-        }
-
-        if (is_array($this->exportStyle)) {
-            $configuration['style'] = $this->exportStyle;
-        }
-
-        return $configuration;
-    }
-
-    private function invokeImageCallback(Closure $callback, mixed $record, Image $image): mixed
-    {
-        $reflection = new ReflectionFunction($callback);
-        $parameters = $reflection->getParameters();
-
-        if ($parameters === []) {
-            return $callback();
-        }
-
-        $firstType = $parameters[0]->getType();
-
-        if ($firstType instanceof ReflectionNamedType && ! $firstType->isBuiltin() && $firstType->getName() === Image::class) {
-            return count($parameters) === 1
-                ? $callback($image)
-                : $callback($image, $record);
-        }
-
-        if (count($parameters) === 1) {
-            return $callback($record);
-        }
-
-        return $callback($record, $image);
     }
 }

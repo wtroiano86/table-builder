@@ -133,6 +133,7 @@
             "/composer.lock",
             "/phpunit.xml",
             "/phpstan.neon",
+            "/.sloppy-baseline.json",
             "/pint.json",
             "/rector.php",
             "/tmp",
